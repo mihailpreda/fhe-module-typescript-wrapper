@@ -1,13 +1,13 @@
 {
   "name": "fhe-module-ts",
   "version": "1.0.0",
-  "description": "Fully homomorphic encryption module wrapper written in typescript",
+  "description": "A Fully Homomorphic Encryption WebAssembly module written in Rust based on a Rust library for lattice-based additive homomorphic encryption with Typescript bindings ",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Preda Mihail Irinel <mihaipreda1997@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "typescript": "^4.2.2"
   }

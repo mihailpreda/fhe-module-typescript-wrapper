@@ -1,6 +1,4 @@
-import { generate_keypair, _encrypt, _decrypt, add_constant_to_cipher_text, subtract_constant_from_cipher_text, add_ciphers, multiply_cipher_by_constant, divide_cipher_by_constant, } from './wasm/fhe_module.js'
- 
-class FHEModule {
+export class FHEModule {
   static instance: FHEModule;
   private module: any;
   /**
@@ -14,6 +12,10 @@ class FHEModule {
           FHEModule.instance = this;
       }
   }
+  /**
+   * 
+   * @returns Array
+   */
   generateKeys():number[][]{ 
     return this.module.generate_keypair();
   }

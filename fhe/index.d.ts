@@ -1,4 +1,4 @@
-declare class FHEModule {
+export declare class FHEModule {
     static instance: FHEModule;
     private module;
     /**
@@ -7,6 +7,10 @@ declare class FHEModule {
      * In order to leverage on V8 optimization all class attributes will be initialized in the constructors;
      */
     constructor(module: any);
+    /**
+     *
+     * @returns Array
+     */
     generateKeys(): number[][];
     encrypt(plainText: Uint8Array, publicKey: Uint8Array): Uint8Array;
     decrypt(encryptedText: Uint8Array, secretKey: Uint8Array): Uint8Array;
