@@ -1,0 +1,16 @@
+{
+  "name": "fhe-module",
+  "collaborators": [
+    "Preda Mihail Irinel <mihaipreda1997@gmail.com>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "fhe_module_bg.wasm",
+    "fhe_module.js",
+    "fhe_module_bg.js",
+    "fhe_module.d.ts"
+  ],
+  "module": "fhe_module.js",
+  "types": "fhe_module.d.ts",
+  "sideEffects": false
+}

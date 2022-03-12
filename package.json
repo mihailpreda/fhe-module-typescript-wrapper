@@ -1,0 +1,14 @@
+{
+  "name": "fhe-module-ts",
+  "version": "1.0.0",
+  "description": "Fully homomorphic encryption module wrapper written in typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Preda Mihail Irinel <mihaipreda1997@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.2.2"
+  }
+}
