@@ -76,8 +76,7 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
+ <img src="media/logos/no_ads/no_ads_data_processing.png" alt="Logo" width="auto" >
 The goal is to replace the current economic model of websites' monetization. Rather than showing paid ads, that confuse and annoy people, the websites could use some of the processing power of people's devices to make several computation on some chunks of data.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
