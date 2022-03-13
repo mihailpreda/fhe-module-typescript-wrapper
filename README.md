@@ -78,7 +78,7 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-This project was developed for my master thesis which has as title `Developing a Fully Homomorphic Encryption WebAssembly module`.
+The goal is to replace the current economic model of websites' monetization. Rather than showing paid ads, that confuse and annoy people, the websites could use some of the processing power of people's devices to make several computation on some chunks of data.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
