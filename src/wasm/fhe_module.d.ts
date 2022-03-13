@@ -42,8 +42,14 @@ export function add_ciphers(encrypted_text_1: Uint8Array, encrypted_text_2: Uint
 export function multiply_cipher_by_constant(encrypted_text: Uint8Array, constant: number): Uint8Array;
 /**
 * @param {Uint8Array} encrypted_text
-* @param {number} constant
+* @param {Uint8Array} constant
 * @param {number} iterations
 * @returns {Uint8Array}
 */
-export function divide_cipher_by_constant(encrypted_text: Uint8Array, constant: number, iterations: number): Uint8Array;
+export function divide_cipher_by_constant(encrypted_text: Uint8Array, constant: Uint8Array, iterations: number): Uint8Array;
+/**
+* @param {Uint8Array} encrypted_text
+* @param {Uint8Array} public_key
+* @returns {Uint8Array}
+*/
+export function rerandomize(encrypted_text: Uint8Array, public_key: Uint8Array): Uint8Array;

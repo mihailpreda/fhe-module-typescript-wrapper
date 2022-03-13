@@ -208,14 +208,33 @@ export function multiply_cipher_by_constant(encrypted_text, constant) {
 
 /**
 * @param {Uint8Array} encrypted_text
-* @param {number} constant
+* @param {Uint8Array} constant
 * @param {number} iterations
 * @returns {Uint8Array}
 */
 export function divide_cipher_by_constant(encrypted_text, constant, iterations) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-        wasm.divide_cipher_by_constant(retptr, addHeapObject(encrypted_text), constant, iterations);
+        wasm.divide_cipher_by_constant(retptr, addHeapObject(encrypted_text), addHeapObject(constant), iterations);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        var v0 = getArrayU8FromWasm0(r0, r1).slice();
+        wasm.__wbindgen_free(r0, r1 * 1);
+        return v0;
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+    }
+}
+
+/**
+* @param {Uint8Array} encrypted_text
+* @param {Uint8Array} public_key
+* @returns {Uint8Array}
+*/
+export function rerandomize(encrypted_text, public_key) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        wasm.rerandomize(retptr, addHeapObject(encrypted_text), addHeapObject(public_key));
         var r0 = getInt32Memory0()[retptr / 4 + 0];
         var r1 = getInt32Memory0()[retptr / 4 + 1];
         var v0 = getArrayU8FromWasm0(r0, r1).slice();
