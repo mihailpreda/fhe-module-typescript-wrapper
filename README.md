@@ -78,49 +78,39 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
-
-Here's why:
-
-- Your time should be focused on creating something amazing. A project that solves a problem and helps others
-- You shouldn't be doing the same tasks over and over like creating a README from scratch
-- You should implement DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
+This project was developed for my master thesis which has as title `Developing a Fully Homomorphic Encryption WebAssembly module`.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+This implementation was possible with the help of certain languages, frameworks and libraries. The main used technologies are :
 
-- [Next.js](https://nextjs.org/)
-- [React.js](https://reactjs.org/)
 - [Vue.js](https://vuejs.org/)
-- [Angular](https://angular.io/)
-- [Svelte](https://svelte.dev/)
-- [Laravel](https://laravel.com)
-- [Bootstrap](https://getbootstrap.com)
-- [JQuery](https://jquery.com)
-
+- [Rust](https://www.rust-lang.org/)
+- [WebAssembly](https://webassembly.org/)
+- [wasm-pack](https://rustwasm.github.io/wasm-pack/)
+- [Cupcake](https://github.com/facebookresearch/Cupcake)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+In order to use you just need to [clone](https://github.com/mihailpreda/fhe-wasm-module.git) / [fork](https://github.com/mihailpreda/fhe-wasm-module.git) / [download](https://github.com/mihailpreda/fhe-wasm-module.git) this repo and copy the `fhe` folder in your project.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+In order for the library to work you need the following:
+_The library is tested on a Vue.js webapp which uses as framework quasar_
 
 - npm
   ```sh
   npm install npm@latest -g
+  ```
+- quasar
+  ```sh
+  npm install -g @quasar/cli
   ```
 
 ### Installation
@@ -148,8 +138,6 @@ _Below is an example of how you can instruct your audience on installing and set
 ## Usage
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
