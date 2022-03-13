@@ -27,7 +27,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="media/logos/wasmfhe/logo_wasm_fhe.png" alt="Logo" width="auto" height="500">
   </a>
 
   <h3 align="center">FHE WASM</h3>
