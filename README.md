@@ -35,7 +35,7 @@
   <p align="center">
     A Fully Homomorphic Encryption WebAssembly module written in Rust based on a Rust library for lattice-based additive homomorphic encryption with Typescript bindings
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/mihailpreda/fhe-wasm-module"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     ·
