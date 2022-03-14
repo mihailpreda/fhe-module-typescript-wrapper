@@ -96,7 +96,7 @@ This implementation was possible with the help of certain languages, frameworks 
 
 ## Getting Started
 
-In order to use you just need to [clone](https://github.com/mihailpreda/fhe-wasm-module.git) / [fork](https://github.com/mihailpreda/fhe-wasm-module.git) / [download](https://github.com/mihailpreda/fhe-wasm-module.git) this repo and copy the `fhe` folder in your project.
+In order to use you just need to [clone](https://github.com/mihailpreda/fhe-wasm-module.git) / [fork](https://github.com/mihailpreda/fhe-wasm-module.git) / [download](https://github.com/mihailpreda/fhe-wasm-module.git) this repository.
 
 ### Prerequisites
 
@@ -114,18 +114,29 @@ _The library is tested on a Vue.js webapp which uses as framework quasar_
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+_This is a example of installation on a quasar project_
 
-1. Get a free API Key at [https://example.com](https://example.com)
+1. Create a quasar project
+   ```sh
+   quasar create <project_name>
+   ```
 2. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/mihailpreda/fhe-wasm-module.git
    ```
-3. Install NPM packages
-   ```sh
-   npm install
+3. Put into the project `src` folder , the `fhe` folder from repo
+
+4. Add into `quasar.conf.js` in webpack configuration into the `build` property, the following: (immediate after _`chainWebpack(chain){...}`_ )
+   ```js
+
+      extendWebpack(cfg) {
+        cfg.experiments = {
+          asyncWebAssembly: true
+        }
+      },
    ```
-4. Enter your API in `config.js`
+   For better understanding, check this [quasar.conf.js sample](./media/code/quasar.conf.js)
+5. Enter your API in `config.js`
    ```js
    const API_KEY = "ENTER YOUR API";
    ```
