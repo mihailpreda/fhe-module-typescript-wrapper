@@ -276,6 +276,7 @@ For better understanding, check this [Example.vue sample](./media/code/Example.v
 - [x] Serialization of public key and secret key
 - [x] Basic arithmetic operations in range of `u8` (0 - 255) (Add / subtract / multiply / divide by a constant)
 - [x] Addition of two different ciphertexts in range of `u8` (0 - 255)
+- [x] Re-randomization of a ciphertext
 - [ ] Implement basic arithmetic operations for `u16` / `u32` range
 - [ ] Implement addition of two different ciphertexts for `u16` / `u32` range
 
