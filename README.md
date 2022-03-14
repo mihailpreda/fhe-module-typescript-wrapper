@@ -137,7 +137,7 @@ _This is a example of installation on a quasar project_
    │   ├── css/                 # CSS/Sass/... files for your app
    |   |   ├── app.sass
    |   │   └── quasar.variables.sass # Quasar Sass variables for you to tweak
-   │(+)├── fhe/                 # <<<<<<<<<<<<<<<<<<<<<<<<<<< fhe module files >>>>>>>>>>>>>>>>>>>>>>>>>>>
+   │(+)├── fhe/                 # <<<<<<<<<<<<<<<<<<<<<<<<< fhe module files >>>>>>>>>>>>>>>>>>>>>>>>>
    │   ├── layouts/             # layout .vue files
    │   ├── pages/               # page .vue files
    │   ├── boot/                # boot files (app initialization code)
