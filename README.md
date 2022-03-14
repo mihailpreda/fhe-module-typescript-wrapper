@@ -124,11 +124,58 @@ _This is a example of installation on a quasar project_
    ```sh
    git clone https://github.com/mihailpreda/fhe-wasm-module.git
    ```
-3. Put into the project `src` folder , the `fhe` folder from repo
+3. Put into the project `src` folder , the `fhe` folder from repo.
+   The project structure of a quasar projects after you insert the `fhe` is as follows:
+
+   ```
+   .
+   ├── public/                  # pure static assets (directly copied)
+   ├── src/
+   │   ├── assets/              # dynamic assets (processed by webpack)
+   │   ├── components/          # .vue components used in pages & layouts
+   │   ├── css/                 # CSS/Sass/... files for your app
+   |   |   ├── app.sass
+   |   │   └── quasar.variables.sass # Quasar Sass variables for you to tweak
+   │(+)├── fhe/                 # <<<<<<<<<<<<<<<<<<<<<<<<<<< fhe module files >>>>>>>>>>>>>>>>>>>>>>>>>>>
+   │   ├── layouts/             # layout .vue files
+   │   ├── pages/               # page .vue files
+   │   ├── boot/                # boot files (app initialization code)
+   │   ├── router/              # Vue Router
+   |   |   ├── index.js         # Vue Router definition
+   |   │   └── routes.js        # App Routes definitions
+   │   ├── stores/              # Pinia Stores (if not using Vuex)
+   |   |   ├── index.js         # Pinia initialization
+   |   │   ├── <store>          # Pinia stores...
+   |   │   └── <store>...
+   │   ├── store/               # Vuex Store (if not using Pinia)
+   |   |   ├── index.js         # Vuex Store definition
+   |   │   ├── <folder>         # Vuex Store Module...
+   |   │   └── <folder>         # Vuex Store Module...
+   │   ├── App.vue              # root Vue component of your App
+   │   └── index.template.html  # Template for index.html
+   ├── src-ssr/                 # SSR specific code (like production Node webserver)
+   ├── src-pwa/                 # PWA specific code (like Service Worker)
+   ├── src-cordova/             # Cordova generated folder used to create Mobile Apps
+   ├── src-electron/            # Electron specific code (like "main" thread)
+   ├── src-bex/                 # BEX (browser extension) specific code (like "main" thread)
+   ├── dist/                    # where production builds go
+   │   ├── spa/                 # example when building SPA
+   │   ├── ssr/                 # example when building SSR
+   │   ├── electron/            # example when building Electron
+   │   └── ....
+   ├── quasar.config.js           # Quasar App Config file
+   ├── babel.config.js          # Babeljs config
+   ├── .editorconfig            # editor config
+   ├── .eslintignore            # ESlint ignore paths
+   ├── .eslintrc.js             # ESlint config
+   ├── .postcssrc.js            # PostCSS config
+   ├── .gitignore               # GIT ignore paths
+   ├── package.json             # npm scripts and dependencies
+   └── README.md                # readme for your website/App
+   ```
 
 4. Add into `quasar.conf.js` in webpack configuration into the `build` property, the following: (immediate after _`chainWebpack(chain){...}`_ )
    ```js
-
       extendWebpack(cfg) {
         cfg.experiments = {
           asyncWebAssembly: true
@@ -136,10 +183,6 @@ _This is a example of installation on a quasar project_
       },
    ```
    For better understanding, check this [quasar.conf.js sample](./media/code/quasar.conf.js)
-5. Enter your API in `config.js`
-   ```js
-   const API_KEY = "ENTER YOUR API";
-   ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -147,7 +190,80 @@ _This is a example of installation on a quasar project_
 
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+_Example.vue_
+
+```js
+<template>
+  <q-page> </q-page>
+</template>
+
+<script>
+import { defineComponent } from "vue";
+import getFheModule from "./../fhe/index";
+
+export default defineComponent({
+  name: "Example",
+  async mounted() {
+    const module = await getFheModule();
+    const [publicKey, secretKey] = module.generateKeys();
+
+    const plainText1 = new Uint8Array(10).fill(10);
+    const encrypted1 = module.encrypt(plainText1, publicKey);
+    const add = new Uint8Array(10).fill(5);
+    const result1 = module.addConstantToCipher(encrypted1, add);
+    const decryptedResult1 = module.decrypt(result1, secretKey);
+    console.log("Decrypted addition: 10 + 5 = 15", decryptedResult1);
+
+    const plainText2 = new Uint8Array(10).fill(10);
+    const encrypted2 = module.encrypt(plainText2, publicKey);
+    const sub = new Uint8Array(10).fill(7);
+    const result2 = module.subtractConstantFromCipher(encrypted2, sub);
+    const decryptedResult2 = module.decrypt(result2, secretKey);
+    console.log("Decrypted subtraction: 10 - 7 = 3", decryptedResult2);
+
+    const plainText3 = new Uint8Array(10).fill(10);
+    const encrypted3 = module.encrypt(plainText3, publicKey);
+    const mul = 8;
+    const result3 = module.multiplyCipherByConstant(encrypted3, mul);
+    const decryptedResult3 = module.decrypt(result3, secretKey);
+    console.log("Decrypted multiplication: 10 * 8 = 80", decryptedResult3);
+
+    const plainText4 = new Uint8Array(10).fill(20);
+    const encrypted4 = module.encrypt(plainText4, publicKey);
+    const div = new Uint8Array(10).fill(2);
+    const iteration = 5;
+    const result4 = module.divideCipherByConstant(encrypted4, div, iteration);
+    const decryptedResult4 = module.decrypt(result4, secretKey);
+    console.log("Decrypted division v1: 20 / 2 = 10", decryptedResult4);
+
+    const plainText5 = new Uint8Array(10).fill(20);
+    const plainText6 = new Uint8Array(10).fill(27);
+    const encrypted5 = module.encrypt(plainText5, publicKey);
+    const encrypted6 = module.encrypt(plainText6, publicKey);
+    const result5 = module.addCiphers(encrypted5, encrypted6);
+    const decryptedResult5 = module.decrypt(result5, secretKey);
+    console.log(
+      "Decrypted addition of 2 cipher texts v1: 20 + 27 = 47",
+      decryptedResult5
+    );
+
+    const plainText7 = new Uint8Array(10).fill(78);
+    const encrypted7 = module.encrypt(plainText7, publicKey);
+    const encrypted8 = module.rerandomize(encrypted7, publicKey);
+    const result6 = module.decrypt(encrypted7, secretKey);
+    const result7 = module.decrypt(encrypted8, secretKey);
+    console.log("Rerandomization example:");
+    console.log("Initial encrypted values", encrypted7);
+    console.log("Rerandozied encrypted values", encrypted8);
+    console.log("Decrypted initial encrypted values", result6);
+    console.log("Decrypted rerandomized encrypted values", result7);
+  },
+});
+</script>
+
+```
+
+For better understanding, check this [Example.vue sample](./media/code/Example.vue)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -155,32 +271,14 @@ Use this space to show useful examples of how a project can be used. Additional 
 
 ## Roadmap
 
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-  - [ ] Chinese
-  - [ ] Spanish
+- [x] Generate keypair
+- [x] Serialization of public key and secret key
+- [x] Basic arithmetic operations in range of `u8` (0 - 255) (Add / subtract / multiply / divide by a constant)
+- [x] Addition of two different ciphertexts in range of `u8` (0 - 255)
+- [ ] Implement basic arithmetic operations for `u16` / `u32` range
+- [ ] Implement addition of two different ciphertexts for `u16` / `u32` range
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- CONTRIBUTING -->
-
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+See the [open issues](https://github.com/mihailpreda/fhe-wasm-module/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -188,7 +286,7 @@ Don't forget to give the project a star! Thanks again!
 
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the MIT License. See [LICENSE.txt](./LICENSE.txt) for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -196,9 +294,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Preda Mihail Irinel - mihaipreda1997@gmail.com
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Project Link: [https://github.com/mihailpreda/fhe-wasm-module](https://github.com/mihailpreda/fhe-wasm-module)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -206,16 +304,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 
 ## Acknowledgments
 
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-- [Choose an Open Source License](https://choosealicense.com)
-- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-- [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-- [Malven's Grid Cheatsheet](https://grid.malven.co/)
-- [Img Shields](https://shields.io)
-- [GitHub Pages](https://pages.github.com)
-- [Font Awesome](https://fontawesome.com)
-- [React Icons](https://react-icons.github.io/react-icons/search)
+This project is a proof of concept developed for master's thesis and is neither production ready in terms of optimization, nor bug free.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -234,4 +323,3 @@ Use this space to list resources you find helpful and would like to give credit 
 [license-url]: https://img.shields.io/github/license/mihailpreda/fhe-wasm-module?style=for-the-badge
 [linkedin-shield]: media/badges/linkedin.svg
 [linkedin-url]: https://www.linkedin.com/in/mihail-irinel-preda-2327b8195
-[product-screenshot]: images/screenshot.png
