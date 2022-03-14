@@ -101,6 +101,7 @@ In order to use you just need to [clone](https://github.com/mihailpreda/fhe-wasm
 ### Prerequisites
 
 In order for the library to work you need the following:
+
 _The library is tested on a Vue.js webapp which uses as framework quasar_
 
 - npm
