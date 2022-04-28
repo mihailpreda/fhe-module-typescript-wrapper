@@ -1,130 +1,205 @@
 export class FHEModule {
   static instance: FHEModule;
   private module: any;
+
+
+
   /**
    * Constructor will modify class prototype to be a singleton, because we need the configuration to persist across the application.
    * Constructor will be without any parameters because we want to initialize properties of the class in different phases of the application.
    * In order to leverage on V8 optimization all class attributes will be initialized in the constructors;
    */
-    constructor(module: any) {
-       this.module=module;
+  constructor(module: any) {
+      this.module = module;
       if (!FHEModule.instance) {
           FHEModule.instance = this;
       }
   }
+  initialize(): Promise < FHEModule > {
+      return this.module.rust_initialize();
+  }
+  /**
+   * @param {string} scheme
+   */
+  setScheme(scheme: string): void {
+      this.module.rust_set_scheme(scheme);
+  }
+  /**
+   * @param {number} poly_modulus_degree
+   * @param {Int32Array} bit_sizes
+   * @param {number} bit_size
+   * @param {string} security_level
+   */
+  setupContext(polyModulusDegree: number, bitSizes: Int32Array, bitSize: number, securityLevel: string): void {
+      this.module.rust_setup_context(polyModulusDegree, bitSizes, bitSize, securityLevel);
+  }
+
   /**
    * Method that generates a pair of (publicKey, secretKey) encryption keys
    * 
-   * @returns Array
+   * @returns {Array<Object>}
    */
-  generateKeys():number[][]{ 
-    return this.module.generate_keypair();
+  generateKeys(): Array < Object > {
+      return this.module.rust_generate_keys();
   }
   /**
-   * Method that encrypts an array of Uint8Array with publicKey
-   * To guarantee the accuracy of the results, any operation must be done in the range [0,255]
-   * @param {Uint8Array} plainText 
-   * @param {Uint8Array} publicKey 
-   * @returns Uint8Array
+   * @param {Int32Array} array
+   * @param {Object} publicKey
+   * @returns {Uint8Array}
    */
-  encrypt(plainText: Uint8Array, publicKey: Uint8Array):Uint8Array{
-    return this.module._encrypt(plainText,publicKey)
 
+  encrypt(array: Int32Array, publicKey: Object): Uint8Array {
+      return this.module.rust_encrypt(array, publicKey);
+  }
+
+
+  /**
+   * @param {Int32Array} array
+   * @param {Object} secretKey
+   * @returns {Uint8Array}
+   */
+
+  decrypt(array: Int32Array, secretKey: Object): Uint8Array {
+      return this.module.rust_decrypt(array, secretKey);
+  }
+
+
+  /**
+   * @param {Int32Array} cipherText1
+   * @param {Int32Array} cipherText2
+   * @returns {Uint8Array}
+   */
+
+  addCiphers(cipherText1: Int32Array, cipherText2: Int32Array): Uint8Array {
+      return this.module.rust_add_ciphers(cipherText1, cipherText2);
+  }
+
+  /**
+   * @param {Int32Array} cipherText1
+   * @param {Int32Array} cipherText2
+   * @returns {Uint8Array}
+   */
+
+  subCiphers(cipherText1: Int32Array, cipherText2: Int32Array): Uint8Array {
+      return this.module.rust_sub_ciphers(cipherText1, cipherText2);
+  }
+
+
+
+  /**
+   * @param {Int32Array} cipherText1
+   * @param {Int32Array} cipherText2
+   * @returns {Uint8Array}
+   */
+
+  multiplyCiphers(cipherText1: Int32Array, cipherText2: Int32Array): Uint8Array {
+      return this.module.rust_multiply_ciphers(cipherText1, cipherText2);
+  }
+
+
+  /**
+   * @param {Int32Array} cipherText1
+   * @returns {Uint8Array}
+   */
+
+  squareCipher(cipherText1: Int32Array): Uint8Array {
+      return this.module.rust_square_cipher(cipherText1);
+  }
+
+
+  /**
+   * @param {Int32Array} cipherText1
+   * @param {number} power
+   * @returns {Uint8Array}
+   */
+
+  exponentiateCipher(cipherText1: Int32Array, power: number): Uint8Array {
+      return this.module.rust_exponentiate_cipher(cipherText1, power);
+  }
+
+
+  /**
+   * @param {Int32Array} cipherText1
+   * @returns {Uint8Array}
+   */
+
+  negateCipher(cipherText1: Int32Array): Uint8Array {
+      return this.module.rust_negate_cipher(cipherText1);
+  }
+
+  /**
+   * @param {Int32Array} cipherText
+   * @param {Int32Array} plainText
+   * @returns {Uint8Array}
+   */
+
+  addPlainCipher(cipherText: Int32Array, plainText: Int32Array): Uint8Array {
+      return this.module.rust_add_plain(cipherText, plainText);
+  }
+
+  /**
+   * @param {Int32Array} cipherText
+   * @param {Int32Array} plainText
+   * @returns {Uint8Array}
+   */
+
+  subPlainCipher(cipherText: Int32Array, plainText: Int32Array): Uint8Array {
+      return this.module.rust_sub_plain(cipherText, plainText);
+  }
+
+
+
+  /**
+   * @param {Int32Array} cipherText
+   * @param {Int32Array} plainText
+   * @returns {Uint8Array}
+   */
+
+  multiplyPlainCipher(cipherText: Int32Array, plainText: Int32Array): Uint8Array {
+      return this.module.rust_multiply_plain(cipherText, plainText);
+  }
+
+  /**
+   * Deallocates the context
+   */
+  deallocateContext(): void {
+      this.module.rust_deallocate_context();
+  }
+
+  /**
+   * Deallocates the parameters
+   */
+  deallocateParameters(): void {
+      this.module.rust_deallocate_parameters();
   }
   /**
-   * Method that decrypts an array of Uint8Array with secretKey
-   * To guarantee the accuracy of the results, any operation must be done in the range [0,255]
-   * @param {Uint8Array} encryptedText 
-   * @param {Uint8Array} secretKey 
-   * @returns Uint8Array
+   * Deallocates the SEAL library
    */
-  decrypt(encryptedText: Uint8Array, secretKey: Uint8Array):Uint8Array{
-    return this.module._decrypt(encryptedText,secretKey);
+  deallocateSealLibrary(): void {
+      this.module.rust_deallocate_seal_library();
   }
   /**
-   * Method that adds a constant value to an already encrypted value
-   * The underlying process of addition is done by vector addition (element by element)
-   * To guarantee the accuracy of the results, any operation must be done in the range [0,255]
-   * @param {Uint8Array} encryptedText 
-   * @param {Uint8Array} constant 
-   * @returns Uint8Array
+   * Deallocates the FHE module
    */
-  addConstantToCipher(encryptedText: Uint8Array, constant: Uint8Array):Uint8Array{
-    return this.module.add_constant_to_cipher_text(encryptedText,constant);
-  }
-  /**
-   * Method that subtracts a constant value to an already encrypted value
-   * The underlying process of subtraction is done by vector subtraction (element by element)
-   * To guarantee the accuracy of the results, any operation must be done in the range [0,255]
-   * @param {Uint8Array} encryptedText 
-   * @param {Uint8Array} constant 
-   * @returns Uint8Array
-   */
-  subtractConstantFromCipher(encryptedText: Uint8Array, constant: Uint8Array):Uint8Array{
-    return this.module.subtract_constant_from_cipher_text(encryptedText,constant);
-  }
-  /**
-   * Method that adds homomorphically 2 already encrypted ciphers.
-   * The ciphers must be encrypted with the same publicKey
-   * To guarantee the accuracy of the results, any operation must be done in the range [0,255]
-   * @param {Uint8Array} encryptedText1 
-   * @param {Uint8Array} encryptedText2 
-   * @returns Uint8Array
-   */
-  addCiphers(encryptedText1: Uint8Array, encryptedText2: Uint8Array): Uint8Array{
-      return this.module.add_ciphers(encryptedText1,encryptedText2);
-  }
-  /**
-   * Method that multiplies an already encrypted cipher by a constant.
-   * To guarantee the accuracy of the results, any operation must be done in the range [0,255]
-   * @param {Uint8Array} encryptedText 
-   * @param {number} constant 
-   * @returns Uint8Array
-   */
-  multiplyCipherByConstant(encryptedText: Uint8Array, constant: number):Uint8Array{
-    return this.module.multiply_cipher_by_constant(encryptedText,constant);
-  }
-  /**
-   * Method that divides an already encrypted cipher by a constant.
-   * This method is implemented as a repeated subtraction 
-   * To guarantee the accuracy of the results, any operation must be done in the range [0,255]
-   * @param {Uint8Array} encryptedText -encrypted
-   * @param {Uint8Array} constant - constant
-   * @param {number} iterations - number of times the subtraction must take place
-   * @returns Uint8Array
-   */
-  divideCipherByConstant(encryptedText: Uint8Array, constant: Uint8Array, iterations:number):Uint8Array{
-    return this.module.divide_cipher_by_constant(encryptedText,constant,iterations);
-  }
-  /**
-   * Rerandomize a ciphertext in-place. The resulting ciphertext will decrypt 
-   * to the same plaintext, while being unlinkable to the input ciphertext.
-   * To guarantee the accuracy of the results, any operation must be done in the range [0,255]
-   * @param {Uint8Array}  encryptedText 
-   * @param {Uint8Array} publicKey 
-   * @returns Uint8Array
-   */
-  rerandomize(encryptedText: Uint8Array,publicKey: Uint8Array):Uint8Array{
-    return this.module.rerandomize(encryptedText,publicKey);
+  deallocateModule(): void {
+      this.module.rust_deallocate_module();
+      this.module = null;
   }
 }
 
 /**
- * Method that initialize a singleton instance of FHEModule
- * 
- * @returns Promise<FHEModule>
- */
-const getFheModule = function():Promise<FHEModule> {
-    return new Promise((resolve,reject)=>{
-      (async ()=>{
-        const module = await import('./wasm/fhe_module.js');
-        const FheModule = new FHEModule(module);
-        resolve(FheModule);
+* Method that initialize a singleton instance of FHEModule
+* 
+* @returns Promise<FHEModule>
+*/
+const getFheModule = function(): Promise < FHEModule > {
+  return new Promise((resolve, reject) => {
+      (async () => {
+          const module = await import('./pkg/index.js');
+          const FheModule = new FHEModule(module);
+          resolve(FheModule);
       })();
-    })
+  })
 }
 
 export default getFheModule;
- 
-
- 

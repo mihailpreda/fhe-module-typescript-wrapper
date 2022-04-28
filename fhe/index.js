@@ -20,111 +20,154 @@ class FHEModule {
             FHEModule.instance = this;
         }
     }
+    initialize() {
+        return this.module.rust_initialize();
+    }
+    /**
+     * @param {string} scheme
+     */
+    setScheme(scheme) {
+        this.module.rust_set_scheme(scheme);
+    }
+    /**
+     * @param {number} poly_modulus_degree
+     * @param {Int32Array} bit_sizes
+     * @param {number} bit_size
+     * @param {string} security_level
+     */
+    setupContext(polyModulusDegree, bitSizes, bitSize, securityLevel) {
+        this.module.rust_setup_context(polyModulusDegree, bitSizes, bitSize, securityLevel);
+    }
     /**
      * Method that generates a pair of (publicKey, secretKey) encryption keys
      *
-     * @returns Array
+     * @returns {Array<Object>}
      */
     generateKeys() {
-        return this.module.generate_keypair();
+        return this.module.rust_generate_keys();
     }
     /**
-     * Method that encrypts an array of Uint8Array with publicKey
-     * To guarantee the accuracy of the results, any operation must be done in the range [0,255]
-     * @param {Uint8Array} plainText
-     * @param {Uint8Array} publicKey
-     * @returns Uint8Array
+     * @param {Int32Array} array
+     * @param {Object} publicKey
+     * @returns {Uint8Array}
      */
-    encrypt(plainText, publicKey) {
-        return this.module._encrypt(plainText, publicKey);
+    encrypt(array, publicKey) {
+        return this.module.rust_encrypt(array, publicKey);
     }
     /**
-     * Method that decrypts an array of Uint8Array with secretKey
-     * To guarantee the accuracy of the results, any operation must be done in the range [0,255]
-     * @param {Uint8Array} encryptedText
-     * @param {Uint8Array} secretKey
-     * @returns Uint8Array
+     * @param {Int32Array} array
+     * @param {Object} secretKey
+     * @returns {Uint8Array}
      */
-    decrypt(encryptedText, secretKey) {
-        return this.module._decrypt(encryptedText, secretKey);
+    decrypt(array, secretKey) {
+        return this.module.rust_decrypt(array, secretKey);
     }
     /**
-     * Method that adds a constant value to an already encrypted value
-     * The underlying process of addition is done by vector addition (element by element)
-     * To guarantee the accuracy of the results, any operation must be done in the range [0,255]
-     * @param {Uint8Array} encryptedText
-     * @param {Uint8Array} constant
-     * @returns Uint8Array
+     * @param {Int32Array} cipherText1
+     * @param {Int32Array} cipherText2
+     * @returns {Uint8Array}
      */
-    addConstantToCipher(encryptedText, constant) {
-        return this.module.add_constant_to_cipher_text(encryptedText, constant);
+    addCiphers(cipherText1, cipherText2) {
+        return this.module.rust_add_ciphers(cipherText1, cipherText2);
     }
     /**
-     * Method that subtracts a constant value to an already encrypted value
-     * The underlying process of subtraction is done by vector subtraction (element by element)
-     * To guarantee the accuracy of the results, any operation must be done in the range [0,255]
-     * @param {Uint8Array} encryptedText
-     * @param {Uint8Array} constant
-     * @returns Uint8Array
+     * @param {Int32Array} cipherText1
+     * @param {Int32Array} cipherText2
+     * @returns {Uint8Array}
      */
-    subtractConstantFromCipher(encryptedText, constant) {
-        return this.module.subtract_constant_from_cipher_text(encryptedText, constant);
+    subCiphers(cipherText1, cipherText2) {
+        return this.module.rust_sub_ciphers(cipherText1, cipherText2);
     }
     /**
-     * Method that adds homomorphically 2 already encrypted ciphers.
-     * The ciphers must be encrypted with the same publicKey
-     * To guarantee the accuracy of the results, any operation must be done in the range [0,255]
-     * @param {Uint8Array} encryptedText1
-     * @param {Uint8Array} encryptedText2
-     * @returns Uint8Array
+     * @param {Int32Array} cipherText1
+     * @param {Int32Array} cipherText2
+     * @returns {Uint8Array}
      */
-    addCiphers(encryptedText1, encryptedText2) {
-        return this.module.add_ciphers(encryptedText1, encryptedText2);
+    multiplyCiphers(cipherText1, cipherText2) {
+        return this.module.rust_multiply_ciphers(cipherText1, cipherText2);
     }
     /**
-     * Method that multiplies an already encrypted cipher by a constant.
-     * To guarantee the accuracy of the results, any operation must be done in the range [0,255]
-     * @param {Uint8Array} encryptedText
-     * @param {number} constant
-     * @returns Uint8Array
+     * @param {Int32Array} cipherText1
+     * @returns {Uint8Array}
      */
-    multiplyCipherByConstant(encryptedText, constant) {
-        return this.module.multiply_cipher_by_constant(encryptedText, constant);
+    squareCipher(cipherText1) {
+        return this.module.rust_square_cipher(cipherText1);
     }
     /**
-     * Method that divides an already encrypted cipher by a constant.
-     * This method is implemented as a repeated subtraction
-     * To guarantee the accuracy of the results, any operation must be done in the range [0,255]
-     * @param {Uint8Array} encryptedText -encrypted
-     * @param {Uint8Array} constant - constant
-     * @param {number} iterations - number of times the subtraction must take place
-     * @returns Uint8Array
+     * @param {Int32Array} cipherText1
+     * @param {number} power
+     * @returns {Uint8Array}
      */
-    divideCipherByConstant(encryptedText, constant, iterations) {
-        return this.module.divide_cipher_by_constant(encryptedText, constant, iterations);
+    exponentiateCipher(cipherText1, power) {
+        return this.module.rust_exponentiate_cipher(cipherText1, power);
     }
     /**
-     * Rerandomize a ciphertext in-place. The resulting ciphertext will decrypt
-     * to the same plaintext, while being unlinkable to the input ciphertext.
-     * To guarantee the accuracy of the results, any operation must be done in the range [0,255]
-     * @param {Uint8Array}  encryptedText
-     * @param {Uint8Array} publicKey
-     * @returns Uint8Array
+     * @param {Int32Array} cipherText1
+     * @returns {Uint8Array}
      */
-    rerandomize(encryptedText, publicKey) {
-        return this.module.rerandomize(encryptedText, publicKey);
+    negateCipher(cipherText1) {
+        return this.module.rust_negate_cipher(cipherText1);
+    }
+    /**
+     * @param {Int32Array} cipherText
+     * @param {Int32Array} plainText
+     * @returns {Uint8Array}
+     */
+    addPlainCipher(cipherText, plainText) {
+        return this.module.rust_add_plain(cipherText, plainText);
+    }
+    /**
+     * @param {Int32Array} cipherText
+     * @param {Int32Array} plainText
+     * @returns {Uint8Array}
+     */
+    subPlainCipher(cipherText, plainText) {
+        return this.module.rust_sub_plain(cipherText, plainText);
+    }
+    /**
+     * @param {Int32Array} cipherText
+     * @param {Int32Array} plainText
+     * @returns {Uint8Array}
+     */
+    multiplyPlainCipher(cipherText, plainText) {
+        return this.module.rust_multiply_plain(cipherText, plainText);
+    }
+    /**
+     * Deallocates the context
+     */
+    deallocateContext() {
+        this.module.rust_deallocate_context();
+    }
+    /**
+     * Deallocates the parameters
+     */
+    deallocateParameters() {
+        this.module.rust_deallocate_parameters();
+    }
+    /**
+     * Deallocates the SEAL library
+     */
+    deallocateSealLibrary() {
+        this.module.rust_deallocate_seal_library();
+    }
+    /**
+     * Deallocates the FHE module
+     */
+    deallocateModule() {
+        this.module.rust_deallocate_module();
+        this.module = null;
     }
 }
 exports.FHEModule = FHEModule;
 /**
- * Method that initialize a singleton instance of FHEModule
- *
- * @returns Promise<FHEModule>
- */
+* Method that initialize a singleton instance of FHEModule
+*
+* @returns Promise<FHEModule>
+*/
 const getFheModule = function () {
     return new Promise((resolve, reject) => {
         (() => __awaiter(this, void 0, void 0, function* () {
-            const module = yield Promise.resolve().then(() => require('./wasm/fhe_module.js'));
+            const module = yield Promise.resolve().then(() => require('./pkg/index.js'));
             const FheModule = new FHEModule(module);
             resolve(FheModule);
         }))();
