@@ -8,6 +8,141 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+class Plain {
+    constructor(module) {
+        this.module = module;
+    }
+    /**
+     * Method that adds plain data to encrypted data
+     * @param {Int32Array} cipherText
+     * @param {Int32Array} plainText
+     * @returns {Uint8Array}
+     */
+    addCipher(cipherText, plainText) {
+        return this.module.rust_add_plain(cipherText, plainText);
+    }
+    /**
+     * Method that subtracts plain data to encrypted data
+     * @param {Int32Array} cipherText
+     * @param {Int32Array} plainText
+     * @returns {Uint8Array}
+     */
+    subCipher(cipherText, plainText) {
+        return this.module.rust_sub_plain(cipherText, plainText);
+    }
+    /**
+     * Method that multiply encrypted data with plain data
+     * @param {Int32Array} cipherText
+     * @param {Int32Array} plainText
+     * @returns {Uint8Array}
+     */
+    multiplyCipher(cipherText, plainText) {
+        return this.module.rust_multiply_plain(cipherText, plainText);
+    }
+    /**
+     * Method that deallocates the wasm module reference
+     */
+    delete() {
+        this.module = null;
+    }
+}
+exports.Plain = Plain;
+;
+class Cipher {
+    constructor(module) {
+        this.module = module;
+    }
+    /**
+     * Method that adds two ciphertexts
+     * @param {Int32Array} cipherText1
+     * @param {Int32Array} cipherText2
+     * @returns {Uint8Array}
+     */
+    add(cipherText1, cipherText2) {
+        return this.module.rust_add_ciphers(cipherText1, cipherText2);
+    }
+    /**
+     * Method that subtracts two ciphertexts
+     * @param {Int32Array} cipherText1
+     * @param {Int32Array} cipherText2
+     * @returns {Uint8Array}
+     */
+    sub(cipherText1, cipherText2) {
+        return this.module.rust_sub_ciphers(cipherText1, cipherText2);
+    }
+    /**
+     * Method that multiplies two ciphertexts
+     * @param {Int32Array} cipherText1
+     * @param {Int32Array} cipherText2
+     * @returns {Uint8Array}
+     */
+    multiply(cipherText1, cipherText2) {
+        return this.module.rust_multiply_ciphers(cipherText1, cipherText2);
+    }
+    /**
+     * Method that squares a ciphertext
+     * @param {Int32Array} cipherText
+     * @returns {Uint8Array}
+     */
+    square(cipherText) {
+        return this.module.rust_square_cipher(cipherText);
+    }
+    /**
+     * Method that exponentatiates a ciphertext to a certain power
+     * @param {Int32Array} cipherText
+     * @param {number} power
+     * @returns {Uint8Array}
+     */
+    exponentiate(cipherText, power) {
+        return this.module.rust_exponentiate_cipher(cipherText, power);
+    }
+    /**
+     * Method that inverts all the values of a ciphertext
+     * @param {Int32Array} cipherText
+     * @returns {Uint8Array}
+     */
+    negate(cipherText) {
+        return this.module.rust_negate_cipher(cipherText);
+    }
+    /**
+     * Method that deallocates the wasm module reference
+     */
+    delete() {
+        this.module = null;
+    }
+}
+exports.Cipher = Cipher;
+class Setup {
+    constructor(module) {
+        this.module = module;
+    }
+    /**
+     * Method that sets the homomorphic encryption scheme
+     * @param {'bfv' | 'bgv' | 'ckks'} scheme
+     */
+    setScheme(scheme) {
+        this.module.rust_set_scheme(scheme);
+    }
+    /**
+     * Method that sets the  security Context of the module
+     * @param {number} poly_modulus_degree
+     * @param {Int32Array} bit_sizes
+     * @param {number} bit_size
+     * @param {'tc128' | 'tc192' | 'tc256'} security_level
+     */
+    setContext(polyModulusDegree, bitSizes, bitSize, securityLevel) {
+        this.module.rust_setup_context(polyModulusDegree, bitSizes, bitSize, securityLevel);
+    }
+    // fastSetup(scheme: 'bfv' | 'bgv' | 'ckks', securityLevel: 'tc128' | 'tc192' | 'tc256'){
+    // }
+    /**
+     * Method that deallocates the wasm module reference
+     */
+    delete() {
+        this.module = null;
+    }
+}
+exports.Setup = Setup;
 class FHEModule {
     /**
      * Constructor will modify class prototype to be a singleton, because we need the configuration to persist across the application.
@@ -19,24 +154,12 @@ class FHEModule {
         if (!FHEModule.instance) {
             FHEModule.instance = this;
         }
+        this.Plain = new Plain(this.module);
+        this.Cipher = new Cipher(this.module);
+        this.Setup = new Setup(this.module);
     }
     initialize() {
         return this.module.rust_initialize();
-    }
-    /**
-     * @param {string} scheme
-     */
-    setScheme(scheme) {
-        this.module.rust_set_scheme(scheme);
-    }
-    /**
-     * @param {number} poly_modulus_degree
-     * @param {Int32Array} bit_sizes
-     * @param {number} bit_size
-     * @param {string} security_level
-     */
-    setupContext(polyModulusDegree, bitSizes, bitSize, securityLevel) {
-        this.module.rust_setup_context(polyModulusDegree, bitSizes, bitSize, securityLevel);
     }
     /**
      * Method that generates a pair of (publicKey, secretKey) encryption keys
@@ -63,76 +186,6 @@ class FHEModule {
         return this.module.rust_decrypt(array, secretKey);
     }
     /**
-     * @param {Int32Array} cipherText1
-     * @param {Int32Array} cipherText2
-     * @returns {Uint8Array}
-     */
-    addCiphers(cipherText1, cipherText2) {
-        return this.module.rust_add_ciphers(cipherText1, cipherText2);
-    }
-    /**
-     * @param {Int32Array} cipherText1
-     * @param {Int32Array} cipherText2
-     * @returns {Uint8Array}
-     */
-    subCiphers(cipherText1, cipherText2) {
-        return this.module.rust_sub_ciphers(cipherText1, cipherText2);
-    }
-    /**
-     * @param {Int32Array} cipherText1
-     * @param {Int32Array} cipherText2
-     * @returns {Uint8Array}
-     */
-    multiplyCiphers(cipherText1, cipherText2) {
-        return this.module.rust_multiply_ciphers(cipherText1, cipherText2);
-    }
-    /**
-     * @param {Int32Array} cipherText1
-     * @returns {Uint8Array}
-     */
-    squareCipher(cipherText1) {
-        return this.module.rust_square_cipher(cipherText1);
-    }
-    /**
-     * @param {Int32Array} cipherText1
-     * @param {number} power
-     * @returns {Uint8Array}
-     */
-    exponentiateCipher(cipherText1, power) {
-        return this.module.rust_exponentiate_cipher(cipherText1, power);
-    }
-    /**
-     * @param {Int32Array} cipherText1
-     * @returns {Uint8Array}
-     */
-    negateCipher(cipherText1) {
-        return this.module.rust_negate_cipher(cipherText1);
-    }
-    /**
-     * @param {Int32Array} cipherText
-     * @param {Int32Array} plainText
-     * @returns {Uint8Array}
-     */
-    addPlainCipher(cipherText, plainText) {
-        return this.module.rust_add_plain(cipherText, plainText);
-    }
-    /**
-     * @param {Int32Array} cipherText
-     * @param {Int32Array} plainText
-     * @returns {Uint8Array}
-     */
-    subPlainCipher(cipherText, plainText) {
-        return this.module.rust_sub_plain(cipherText, plainText);
-    }
-    /**
-     * @param {Int32Array} cipherText
-     * @param {Int32Array} plainText
-     * @returns {Uint8Array}
-     */
-    multiplyPlainCipher(cipherText, plainText) {
-        return this.module.rust_multiply_plain(cipherText, plainText);
-    }
-    /**
      * Deallocates the context
      */
     deallocateContext() {
@@ -156,14 +209,20 @@ class FHEModule {
     deallocateModule() {
         this.module.rust_deallocate_module();
         this.module = null;
+        this.Cipher.delete();
+        this.Plain.delete();
+        this.Setup.delete();
+        // delete this.Setup;
+        // delete this.Cipher;
+        // delete this.Plain;
     }
 }
 exports.FHEModule = FHEModule;
 /**
-* Method that initialize a singleton instance of FHEModule
-*
-* @returns Promise<FHEModule>
-*/
+ * Method that initialize a singleton instance of FHEModule
+ *
+ * @returns Promise<FHEModule>
+ */
 const getFheModule = function () {
     return new Promise((resolve, reject) => {
         (() => __awaiter(this, void 0, void 0, function* () {

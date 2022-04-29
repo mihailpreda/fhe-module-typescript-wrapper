@@ -1,6 +1,107 @@
+export declare class Plain {
+    private module;
+    constructor(module: any);
+    /**
+     * Method that adds plain data to encrypted data
+     * @param {Int32Array} cipherText
+     * @param {Int32Array} plainText
+     * @returns {Uint8Array}
+     */
+    addCipher(cipherText: Int32Array, plainText: Int32Array): Uint8Array;
+    /**
+     * Method that subtracts plain data to encrypted data
+     * @param {Int32Array} cipherText
+     * @param {Int32Array} plainText
+     * @returns {Uint8Array}
+     */
+    subCipher(cipherText: Int32Array, plainText: Int32Array): Uint8Array;
+    /**
+     * Method that multiply encrypted data with plain data
+     * @param {Int32Array} cipherText
+     * @param {Int32Array} plainText
+     * @returns {Uint8Array}
+     */
+    multiplyCipher(cipherText: Int32Array, plainText: Int32Array): Uint8Array;
+    /**
+     * Method that deallocates the wasm module reference
+     */
+    delete(): void;
+}
+export declare class Cipher {
+    private module;
+    constructor(module: any);
+    /**
+     * Method that adds two ciphertexts
+     * @param {Int32Array} cipherText1
+     * @param {Int32Array} cipherText2
+     * @returns {Uint8Array}
+     */
+    add(cipherText1: Int32Array, cipherText2: Int32Array): Uint8Array;
+    /**
+     * Method that subtracts two ciphertexts
+     * @param {Int32Array} cipherText1
+     * @param {Int32Array} cipherText2
+     * @returns {Uint8Array}
+     */
+    sub(cipherText1: Int32Array, cipherText2: Int32Array): Uint8Array;
+    /**
+     * Method that multiplies two ciphertexts
+     * @param {Int32Array} cipherText1
+     * @param {Int32Array} cipherText2
+     * @returns {Uint8Array}
+     */
+    multiply(cipherText1: Int32Array, cipherText2: Int32Array): Uint8Array;
+    /**
+     * Method that squares a ciphertext
+     * @param {Int32Array} cipherText
+     * @returns {Uint8Array}
+     */
+    square(cipherText: Int32Array): Uint8Array;
+    /**
+     * Method that exponentatiates a ciphertext to a certain power
+     * @param {Int32Array} cipherText
+     * @param {number} power
+     * @returns {Uint8Array}
+     */
+    exponentiate(cipherText: Int32Array, power: number): Uint8Array;
+    /**
+     * Method that inverts all the values of a ciphertext
+     * @param {Int32Array} cipherText
+     * @returns {Uint8Array}
+     */
+    negate(cipherText: Int32Array): Uint8Array;
+    /**
+     * Method that deallocates the wasm module reference
+     */
+    delete(): void;
+}
+export declare class Setup {
+    private module;
+    constructor(module: any);
+    /**
+     * Method that sets the homomorphic encryption scheme
+     * @param {'bfv' | 'bgv' | 'ckks'} scheme
+     */
+    setScheme(scheme: 'bfv' | 'bgv' | 'ckks'): void;
+    /**
+     * Method that sets the  security Context of the module
+     * @param {number} poly_modulus_degree
+     * @param {Int32Array} bit_sizes
+     * @param {number} bit_size
+     * @param {'tc128' | 'tc192' | 'tc256'} security_level
+     */
+    setContext(polyModulusDegree: number, bitSizes: Int32Array, bitSize: number, securityLevel: 'tc128' | 'tc192' | 'tc256'): void;
+    /**
+     * Method that deallocates the wasm module reference
+     */
+    delete(): void;
+}
 export declare class FHEModule {
     private static instance;
     private module;
+    Plain: Plain;
+    Cipher: Cipher;
+    Setup: Setup;
     /**
      * Constructor will modify class prototype to be a singleton, because we need the configuration to persist across the application.
      * Constructor will be without any parameters because we want to initialize properties of the class in different phases of the application.
@@ -8,17 +109,6 @@ export declare class FHEModule {
      */
     constructor(module: any);
     initialize(): Promise<FHEModule>;
-    /**
-     * @param {string} scheme
-     */
-    setScheme(scheme: string): void;
-    /**
-     * @param {number} poly_modulus_degree
-     * @param {Int32Array} bit_sizes
-     * @param {number} bit_size
-     * @param {string} security_level
-     */
-    setupContext(polyModulusDegree: number, bitSizes: Int32Array, bitSize: number, securityLevel: string): void;
     /**
      * Method that generates a pair of (publicKey, secretKey) encryption keys
      *
@@ -38,58 +128,6 @@ export declare class FHEModule {
      */
     decrypt(array: Int32Array, secretKey: Object): Uint8Array;
     /**
-     * @param {Int32Array} cipherText1
-     * @param {Int32Array} cipherText2
-     * @returns {Uint8Array}
-     */
-    addCiphers(cipherText1: Int32Array, cipherText2: Int32Array): Uint8Array;
-    /**
-     * @param {Int32Array} cipherText1
-     * @param {Int32Array} cipherText2
-     * @returns {Uint8Array}
-     */
-    subCiphers(cipherText1: Int32Array, cipherText2: Int32Array): Uint8Array;
-    /**
-     * @param {Int32Array} cipherText1
-     * @param {Int32Array} cipherText2
-     * @returns {Uint8Array}
-     */
-    multiplyCiphers(cipherText1: Int32Array, cipherText2: Int32Array): Uint8Array;
-    /**
-     * @param {Int32Array} cipherText1
-     * @returns {Uint8Array}
-     */
-    squareCipher(cipherText1: Int32Array): Uint8Array;
-    /**
-     * @param {Int32Array} cipherText1
-     * @param {number} power
-     * @returns {Uint8Array}
-     */
-    exponentiateCipher(cipherText1: Int32Array, power: number): Uint8Array;
-    /**
-     * @param {Int32Array} cipherText1
-     * @returns {Uint8Array}
-     */
-    negateCipher(cipherText1: Int32Array): Uint8Array;
-    /**
-     * @param {Int32Array} cipherText
-     * @param {Int32Array} plainText
-     * @returns {Uint8Array}
-     */
-    addPlainCipher(cipherText: Int32Array, plainText: Int32Array): Uint8Array;
-    /**
-     * @param {Int32Array} cipherText
-     * @param {Int32Array} plainText
-     * @returns {Uint8Array}
-     */
-    subPlainCipher(cipherText: Int32Array, plainText: Int32Array): Uint8Array;
-    /**
-     * @param {Int32Array} cipherText
-     * @param {Int32Array} plainText
-     * @returns {Uint8Array}
-     */
-    multiplyPlainCipher(cipherText: Int32Array, plainText: Int32Array): Uint8Array;
-    /**
      * Deallocates the context
      */
     deallocateContext(): void;
@@ -107,9 +145,9 @@ export declare class FHEModule {
     deallocateModule(): void;
 }
 /**
-* Method that initialize a singleton instance of FHEModule
-*
-* @returns Promise<FHEModule>
-*/
+ * Method that initialize a singleton instance of FHEModule
+ *
+ * @returns Promise<FHEModule>
+ */
 declare const getFheModule: () => Promise<FHEModule>;
 export default getFheModule;
