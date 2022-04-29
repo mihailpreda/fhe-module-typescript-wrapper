@@ -1,14 +1,13 @@
 export class FHEModule {
-  static instance: FHEModule;
-  private module: any;
-
-
+ private static  instance: FHEModule;
+ private module: any;
 
   /**
    * Constructor will modify class prototype to be a singleton, because we need the configuration to persist across the application.
    * Constructor will be without any parameters because we want to initialize properties of the class in different phases of the application.
    * In order to leverage on V8 optimization all class attributes will be initialized in the constructors;
    */
+
   constructor(module: any) {
       this.module = module;
       if (!FHEModule.instance) {
@@ -192,7 +191,7 @@ export class FHEModule {
 * 
 * @returns Promise<FHEModule>
 */
-const getFheModule = function(): Promise < FHEModule > {
+const getFheModule = function(): Promise<FHEModule> {
   return new Promise((resolve, reject) => {
       (async () => {
           const module = await import('./pkg/index.js');

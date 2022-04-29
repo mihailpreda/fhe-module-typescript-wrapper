@@ -1,5 +1,5 @@
 export declare class FHEModule {
-    static instance: FHEModule;
+    private static instance;
     private module;
     /**
      * Constructor will modify class prototype to be a singleton, because we need the configuration to persist across the application.
