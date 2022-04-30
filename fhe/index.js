@@ -133,8 +133,15 @@ class Setup {
     setContext(polyModulusDegree, bitSizes, bitSize, securityLevel) {
         this.module.rust_setup_context(polyModulusDegree, bitSizes, bitSize, securityLevel);
     }
-    // fastSetup(scheme: 'bfv' | 'bgv' | 'ckks', securityLevel: 'tc128' | 'tc192' | 'tc256'){
-    // }
+    /**
+     * Method that will do the setup of the module in a very simplified way.
+     * @param { 'bfv' | 'bgv' | 'ckks' } scheme - homomorphic scheme used
+     * @param { 'tc128' | 'tc192' | 'tc256' } securityLevel - security measured in bits
+     * @param { 'veryFast' | 'fast' | 'normal' | 'slow' | 'verySlow' } processingSpeed - refers to the size of polymodulus degree, the greater the degree, the heavier the computational cost will be
+     */
+    fastSetup(scheme, securityLevel, processingSpeed) {
+        this.module.rust_fast_setup(scheme, securityLevel, processingSpeed);
+    }
     /**
      * Method that deallocates the wasm module reference
      */
@@ -212,9 +219,6 @@ class FHEModule {
         this.Cipher.delete();
         this.Plain.delete();
         this.Setup.delete();
-        // delete this.Setup;
-        // delete this.Cipher;
-        // delete this.Plain;
     }
 }
 exports.FHEModule = FHEModule;

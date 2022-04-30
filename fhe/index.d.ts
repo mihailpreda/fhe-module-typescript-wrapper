@@ -92,6 +92,13 @@ export declare class Setup {
      */
     setContext(polyModulusDegree: number, bitSizes: Int32Array, bitSize: number, securityLevel: 'tc128' | 'tc192' | 'tc256'): void;
     /**
+     * Method that will do the setup of the module in a very simplified way.
+     * @param { 'bfv' | 'bgv' | 'ckks' } scheme - homomorphic scheme used
+     * @param { 'tc128' | 'tc192' | 'tc256' } securityLevel - security measured in bits
+     * @param { 'veryFast' | 'fast' | 'normal' | 'slow' | 'verySlow' } processingSpeed - refers to the size of polymodulus degree, the greater the degree, the heavier the computational cost will be
+     */
+    fastSetup(scheme: 'bfv' | 'bgv' | 'ckks', securityLevel: 'tc128' | 'tc192' | 'tc256', processingSpeed: 'veryFast' | 'fast' | 'normal' | 'slow' | 'verySlow'): void;
+    /**
      * Method that deallocates the wasm module reference
      */
     delete(): void;
