@@ -364,7 +364,7 @@ export const js_to_rust_fast_setup = (scheme='bfv', securityLevel='tc128', proce
         seal.CoeffModulus.Create(polyModulusDegree, Int32Array.from(bitSizes))
     );
 
-    if (parms.scheme !== seal.SchemeType.ckks) {
+    if (!isCKKS()) {
 
         // Set the PlainModulus to a prime of bitSize 20.
         parms.setPlainModulus(seal.PlainModulus.Batching(polyModulusDegree, bitSize));
@@ -399,11 +399,10 @@ export const js_to_rust_encrypt = (plainText, publicKey) => {
     const cipherText = encryptor.encrypt(encodedPlainText);
 
     //deallocate memory
-    const result = cipherText.saveArray();
     encoder.delete();
     encryptor.delete();
-    cipherText.delete();
-    return result;
+
+    return cipherText;
 };
 
 export const js_to_rust_decrypt = (cipherText, secretKey) => {
@@ -412,7 +411,7 @@ export const js_to_rust_decrypt = (cipherText, secretKey) => {
         context: context
     });
 
-    preparedCipherText.loadArray(context, cipherText);
+    preparedCipherText.load(context, cipherText);
 
     const encoder = isCKKS() ? seal.CKKSEncoder(context) : seal.BatchEncoder(context);
     const decryptor = seal.Decryptor(context, secretKey);
@@ -442,19 +441,17 @@ export const js_to_rust_add_ciphers = (cipherText1, cipherText2) => {
     const result = seal.CipherText({
         context: context
     });
-    preparedCipherText1.loadArray(context, cipherText1);
-    preparedCipherText2.loadArray(context, cipherText2);
+    preparedCipherText1.load(context, cipherText1);
+    preparedCipherText2.load(context, cipherText2);
     const evaluator = seal.Evaluator(context);
     evaluator.add(preparedCipherText1, preparedCipherText2, result);
-    const computedResult = result.saveArray();
 
     //deallocate memory
     preparedCipherText1.delete();
     preparedCipherText2.delete();
-    result.delete();
     evaluator.delete();
 
-    return computedResult;
+    return result;
 };
 
 export const js_to_rust_sub_ciphers = (cipherText1, cipherText2) => {
@@ -468,20 +465,17 @@ export const js_to_rust_sub_ciphers = (cipherText1, cipherText2) => {
     const result = seal.CipherText({
         context: context
     });
-    preparedCipherText1.loadArray(context, cipherText1);
-    preparedCipherText2.loadArray(context, cipherText2);
+    preparedCipherText1.load(context, cipherText1);
+    preparedCipherText2.load(context, cipherText2);
     const evaluator = seal.Evaluator(context);
     evaluator.sub(preparedCipherText1, preparedCipherText2, result);
-    const computedResult = result.saveArray();
-
+   
     //deallocate memory
     preparedCipherText1.delete();
     preparedCipherText2.delete();
-    result.delete();
     evaluator.delete();
 
-    return computedResult;
-
+    return result;
 };
 
 export const js_to_rust_multiply_ciphers = (cipherText1, cipherText2) => {
@@ -495,20 +489,17 @@ export const js_to_rust_multiply_ciphers = (cipherText1, cipherText2) => {
     const result = seal.CipherText({
         context: context
     });
-    preparedCipherText1.loadArray(context, cipherText1);
-    preparedCipherText2.loadArray(context, cipherText2);
+    preparedCipherText1.load(context, cipherText1);
+    preparedCipherText2.load(context, cipherText2);
     const evaluator = seal.Evaluator(context);
     evaluator.multiply(preparedCipherText1, preparedCipherText2, result);
-
-    const computedResult = result.saveArray();
 
     //deallocate memory
     preparedCipherText1.delete();
     preparedCipherText2.delete();
-    result.delete();
     evaluator.delete();
 
-    return computedResult;
+    return result;
 };
 
 export const js_to_rust_square_cipher = (cipherText1) => {
@@ -520,19 +511,16 @@ export const js_to_rust_square_cipher = (cipherText1) => {
     const result = seal.CipherText({
         context: context
     });
-    preparedCipherText1.loadArray(context, cipherText1);
+    preparedCipherText1.load(context, cipherText1);
 
     const evaluator = seal.Evaluator(context);
     evaluator.square(preparedCipherText1, result);
 
-    const computedResult = result.saveArray();
-
     //deallocate memory
     preparedCipherText1.delete();
-    result.delete();
     evaluator.delete();
 
-    return computedResult;
+    return result;
 };
 
 export const js_to_rust_exponentiate_cipher = (cipherText1, power) => {
@@ -545,21 +533,18 @@ export const js_to_rust_exponentiate_cipher = (cipherText1, power) => {
     const result = seal.CipherText({
         context: context
     });
-    preparedCipherText1.loadArray(context, cipherText1);
+    preparedCipherText1.load(context, cipherText1);
 
     const evaluator = seal.Evaluator(context);
     evaluator.exponentiate(preparedCipherText1, power, relinKeys, result);
-
-    const computedResult = result.saveArray();
 
     //deallocate memory
     preparedCipherText1.delete();
     relinKeys.delete();
     keyGenerator.delete();
-    result.delete();
     evaluator.delete();
 
-    return computedResult;
+    return result;
 };
 
 export const js_to_rust_negate_cipher = (cipherText1) => {
@@ -571,18 +556,16 @@ export const js_to_rust_negate_cipher = (cipherText1) => {
     const result = seal.CipherText({
         context: context
     });
-    preparedCipherText1.loadArray(context, cipherText1);
+    preparedCipherText1.load(context, cipherText1);
 
     const evaluator = seal.Evaluator(context);
     evaluator.negate(preparedCipherText1, result);
-    const computedResult = result.saveArray();
 
     //deallocate memory
     preparedCipherText1.delete();
-    result.delete();
     evaluator.delete();
 
-    return computedResult;
+    return result;
 };
 
 export const js_to_rust_add_plain = (cipherText, plainText) => {
@@ -595,21 +578,18 @@ export const js_to_rust_add_plain = (cipherText, plainText) => {
     const result = seal.CipherText({
         context: context
     });
-    preparedCipherText.loadArray(context, cipherText);
+    preparedCipherText.load(context, cipherText);
 
     const evaluator = seal.Evaluator(context);
     evaluator.addPlain(preparedCipherText, preparedPlainText, result);
-
-    const computedResult = result.saveArray();
 
     //deallocate memory
     preparedCipherText.delete();
     encoder.delete();
     preparedPlainText.delete();
-    result.delete();
     evaluator.delete();
 
-    return computedResult;
+    return result;
 };
 
 export const js_to_rust_sub_plain = (cipherText, plainText) => {
@@ -622,21 +602,18 @@ export const js_to_rust_sub_plain = (cipherText, plainText) => {
     const result = seal.CipherText({
         context: context
     });
-    preparedCipherText.loadArray(context, cipherText);
+    preparedCipherText.load(context, cipherText);
 
     const evaluator = seal.Evaluator(context);
     evaluator.subPlain(preparedCipherText, preparedPlainText, result);
-
-    const computedResult = result.saveArray();
 
     //deallocate memory
     preparedCipherText.delete();
     encoder.delete();
     preparedPlainText.delete();
-    result.delete();
     evaluator.delete();
 
-    return computedResult;
+    return result;
 };
 
 export const js_to_rust_multiply_plain = (cipherText, plainText) => {
@@ -649,21 +626,18 @@ export const js_to_rust_multiply_plain = (cipherText, plainText) => {
     const result = seal.CipherText({
         context: context
     });
-    preparedCipherText.loadArray(context, cipherText);
+    preparedCipherText.load(context, cipherText);
 
     const evaluator = seal.Evaluator(context);
     evaluator.multiplyPlain(preparedCipherText, preparedPlainText, result);
-
-    const computedResult = result.saveArray();
 
     //deallocate memory
     preparedCipherText.delete();
     encoder.delete();
     preparedPlainText.delete();
-    result.delete();
     evaluator.delete();
 
-    return computedResult;
+    return result;
 };
 
 export const js_to_rust_deallocate_context = () => {
@@ -684,30 +658,30 @@ export const js_to_rust_deallocate_module = () => {
     seal = null;
 }
 
-// export const js_to_rust_sum_elements = (cipherText1, scheme) => {
-//   let schemeType;
-//   switch (scheme) {
-//     case 'bfv':
-//       schemeType = seal.SchemeType.bfv;
-//       break;
-//     case 'ckks':
-//       schemeType = seal.SchemeType.ckks;
-//       break;
-//     case 'bgv':
-//       schemeType = seal.SchemeType.bgv;
-//       break;
-//     default:
-//       schemeType = seal.SchemeType.bfv;
-//       break;
-//   }
-//   const keyGenerator = seal.KeyGenerator(context);
-//   const galoisKeys = keyGenerator.createGaloisKeys();
-//   const preparedCipherText1 = seal.CipherText({ context: context });
-//   const result = seal.CipherText({ context: context });
-//   preparedCipherText1.loadArray(context, cipherText1);
+export const js_to_rust_sum_elements = (cipherText1, scheme) => {
+  let schemeType;
+  switch (scheme) {
+    case 'bfv':
+      schemeType = seal.SchemeType.bfv;
+      break;
+    case 'ckks':
+      schemeType = seal.SchemeType.ckks;
+      break;
+    case 'bgv':
+      schemeType = seal.SchemeType.bgv;
+      break;
+    default:
+      schemeType = seal.SchemeType.bfv;
+      break;
+  }
+  const keyGenerator = seal.KeyGenerator(context);
+  const galoisKeys = keyGenerator.createGaloisKeys();
+  const preparedCipherText1 = seal.CipherText({ context: context });
+  const result = seal.CipherText({ context: context });
+  preparedCipherText1.load(context, cipherText1);
 
-//   const evaluator = seal.Evaluator(context);
+  const evaluator = seal.Evaluator(context);
 
-//   evaluator.sumElements(preparedCipherText1, galoisKeys, schemeType, result);
-//   return result.saveArray();
-// };
+  evaluator.sumElements(preparedCipherText1, galoisKeys, schemeType, result);
+  return result;
+};

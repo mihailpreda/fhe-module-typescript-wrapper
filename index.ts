@@ -1,10 +1,24 @@
-import {
-    PublicKey
-} from 'node-seal/implementation/public-key';
-import {
-    SecretKey
-} from 'node-seal/implementation/secret-key';
-
+import { CipherText } from "node-seal/implementation/cipher-text";
+import { PublicKey } from "node-seal/implementation/public-key";
+import { SecretKey } from "node-seal/implementation/secret-key";
+export enum Scheme {
+    NONE = "none",
+    BFV = "bfv",
+    BGV = "bgv",
+    CKKS = "ckks",
+}
+export enum Security {
+    TC128 = "tc128",
+    TC192 = "tc192",
+    TC256 = "tc256",
+}
+export enum ProcessingSpeed {
+    VERY_FAST = "veryFast",
+    FAST = "fast",
+    NORMAL = "normal",
+    SLOW = "slow",
+    VERY_SLOW = "verySlow",
+}
 export class Plain {
     private module: any;
 
@@ -12,34 +26,34 @@ export class Plain {
         this.module = module;
     }
     /**
-     * Method that adds plain data to encrypted data 
-     * @param {Int32Array} cipherText
+     * Method that adds plain data to encrypted data
+     * @param {CipherText} cipherText
      * @param {Int32Array | Float64Array} plainText
-     * @returns {Uint8Array}
+     * @returns {CipherText}
      */
-    add(cipherText: Int32Array, plainText: Int32Array | Float64Array): Uint8Array {
+    add(cipherText: string, plainText: Int32Array | Float64Array): CipherText {
         return this.module.rust_add_plain(cipherText, plainText);
     }
 
     /**
-     * Method that subtracts plain data to encrypted data 
-     * @param {Int32Array} cipherText
+     * Method that subtracts plain data to encrypted data
+     * @param {string} cipherText
      * @param {Int32Array | Float64Array} plainText
-     * @returns {Uint8Array}
+     * @returns {CipherText}
      */
 
-    sub(cipherText: Int32Array, plainText: Int32Array | Float64Array): Uint8Array {
+    sub(cipherText: string, plainText: Int32Array | Float64Array): CipherText {
         return this.module.rust_sub_plain(cipherText, plainText);
     }
 
     /**
      * Method that multiply encrypted data with plain data
-     * @param {Int32Array} cipherText
+     * @param {string} cipherText
      * @param {Int32Array | Float64Array} plainText
-     * @returns {Uint8Array}
+     * @returns {CipherText}
      */
 
-    multiply(cipherText: Int32Array, plainText: Int32Array | Float64Array): Uint8Array {
+    multiply(cipherText: string, plainText: Int32Array | Float64Array): CipherText {
         return this.module.rust_multiply_plain(cipherText, plainText);
     }
 
@@ -49,8 +63,7 @@ export class Plain {
     delete() {
         this.module = null;
     }
-
-};
+}
 export class Cipher {
     private module: any;
 
@@ -58,74 +71,72 @@ export class Cipher {
         this.module = module;
     }
     /**
-     * Method that adds two ciphertexts 
-     * @param {Int32Array | Float64Array} cipherText1
-     * @param {Int32Array | Float64Array} cipherText2
-     * @returns {Uint8Array}
+     * Method that adds two ciphertexts
+     * @param {CipherText} cipherText1
+     * @param {CipherText} cipherText2
+     * @returns {CipherText}
      */
 
-    add(cipherText1: Int32Array | Float64Array, cipherText2: Int32Array | Float64Array): Uint8Array {
+    add(cipherText1: string, cipherText2: string): CipherText {
         return this.module.rust_add_ciphers(cipherText1, cipherText2);
     }
 
     /**
      * Method that subtracts two ciphertexts
-     * @param {Int32Array | Float64Array} cipherText1
-     * @param {Int32Array | Float64Array} cipherText2
-     * @returns {Uint8Array}
+     * @param {string} cipherText1
+     * @param {string} cipherText2
+     * @returns {CipherText}
      */
 
-    sub(cipherText1: Int32Array | Float64Array, cipherText2: Int32Array | Float64Array): Uint8Array {
+    sub(cipherText1: string, cipherText2: string): CipherText {
         return this.module.rust_sub_ciphers(cipherText1, cipherText2);
     }
 
-
-
     /**
      * Method that multiplies two ciphertexts
-     * @param {Int32Array | Float64Array} cipherText1
-     * @param {Int32Array | Float64Array} cipherText2
-     * @returns {Uint8Array}
+     * @param {string} cipherText1
+     * @param {string} cipherText2
+     * @returns {CipherText}
      */
 
-    multiply(cipherText1: Int32Array | Float64Array, cipherText2: Int32Array | Float64Array): Uint8Array {
+    multiply(cipherText1: string, cipherText2: string): CipherText {
         return this.module.rust_multiply_ciphers(cipherText1, cipherText2);
     }
 
-
     /**
      * Method that squares a ciphertext
-     * @param {Int32Array | Float64Array} cipherText
-     * @returns {Uint8Array}
+     * @param {string} cipherText
+     * @returns {CipherText}
      */
 
-    square(cipherText: Int32Array | Float64Array): Uint8Array {
+    square(cipherText: string): CipherText {
         return this.module.rust_square_cipher(cipherText);
     }
 
-
     /**
      * Method that exponentatiates a ciphertext to a certain power
-     * @param {Int32Array | Float64Array} cipherText
+     * @param {string} cipherText
      * @param {number} power
-     * @returns {Uint8Array}
+     * @returns {CipherText}
      */
 
-    exponentiate(cipherText: Int32Array | Float64Array, power: number): Uint8Array {
+    exponentiate(cipherText: string, power: number): CipherText {
         return this.module.rust_exponentiate_cipher(cipherText, power);
     }
 
-
     /**
      * Method that inverts all the values of a ciphertext
-     * @param {Int32Array | Float64Array} cipherText
-     * @returns {Uint8Array}
+     * @param {string} cipherText
+     * @returns {CipherText}
      */
 
-    negate(cipherText: Int32Array | Float64Array): Uint8Array {
+    negate(cipherText: string): CipherText {
         return this.module.rust_negate_cipher(cipherText);
     }
 
+    sumElements(cipherText: string, scheme: Scheme): CipherText {
+        return this.module.rust_sum_elements(cipherText, scheme);
+    }
     /**
      * Method that deallocates the wasm module reference
      */
@@ -141,9 +152,9 @@ export class Setup {
     }
     /**
      * Method that sets the homomorphic encryption scheme
-     * @param {'bfv' | 'bgv' | 'ckks'} scheme
+     * @param {Scheme} scheme
      */
-    setScheme(scheme: 'bfv' | 'bgv' | 'ckks'): void {
+    setScheme(scheme: Scheme): void {
         this.module.rust_set_scheme(scheme);
     }
     /**
@@ -151,20 +162,25 @@ export class Setup {
      * @param {number} poly_modulus_degree
      * @param {Int32Array} bit_sizes
      * @param {number} bit_size
-     * @param {'tc128' | 'tc192' | 'tc256'} security_level
+     * @param {Security} security_level
      */
-    setContext(polyModulusDegree: number, bitSizes: Int32Array, bitSize: number, securityLevel: 'tc128' | 'tc192' | 'tc256'): void {
-        this.module.rust_setup_context(polyModulusDegree, bitSizes, bitSize, securityLevel);
+    setContext(
+        polyModulusDegree: number,
+        bitSizes: Int32Array,
+        bitSize: number,
+        Security: Security
+    ): void {
+        this.module.rust_setup_context(polyModulusDegree, bitSizes, bitSize, Security);
     }
 
     /**
      * Method that will do the setup of the module in a very simplified way.
      * @param { 'bfv' | 'bgv' | 'ckks' } scheme - homomorphic scheme used
-     * @param { 'tc128' | 'tc192' | 'tc256' } securityLevel - security measured in bits 
-     * @param { 'veryFast' | 'fast' | 'normal' | 'slow' | 'verySlow' } processingSpeed - refers to the size of polymodulus degree, the greater the degree, the heavier the computational cost will be
+     * @param { Security } Security - security measured in bits
+     * @param { ProcessingSpeed } processingSpeed - refers to the size of polymodulus degree, the greater the degree, the heavier the computational cost will be
      */
-    fastSetup(scheme: 'bfv' | 'bgv' | 'ckks', securityLevel: 'tc128' | 'tc192' | 'tc256', processingSpeed: 'veryFast' | 'fast' | 'normal' | 'slow' | 'verySlow'): void {
-        this.module.rust_fast_setup(scheme, securityLevel, processingSpeed);
+    fastSetup(scheme: Scheme, Security: Security, processingSpeed: ProcessingSpeed): void {
+        this.module.rust_fast_setup(scheme, Security, processingSpeed);
     }
 
     /**
@@ -173,7 +189,6 @@ export class Setup {
     delete() {
         this.module = null;
     }
-
 }
 export class FHEModule {
     private static instance: FHEModule;
@@ -197,14 +212,14 @@ export class FHEModule {
         this.Setup = new Setup(this.module);
     }
 
-    initialize(): Promise < FHEModule > {
+    initialize(): Promise<FHEModule> {
         return this.module.rust_initialize();
     }
 
     /**
      * Method that generates a pair of (publicKey, secretKey) encryption keys
-     * 
-     * @returns {Array<Object>}
+     *
+     * @returns {[PublicKey, SecretKey]}
      */
     generateKeys(): [PublicKey, SecretKey] {
         return this.module.rust_generate_keys();
@@ -212,10 +227,10 @@ export class FHEModule {
     /**
      * @param {Int32Array | Float64Array} array
      * @param {Object} publicKey
-     * @returns {Uint8Array}
+     * @returns {CipherText}
      */
 
-    encrypt(array: Int32Array | Float64Array, publicKey: PublicKey): Uint8Array {
+    encrypt(array: Int32Array | Float64Array | Uint32Array, publicKey: PublicKey): CipherText {
         return this.module.rust_encrypt(array, publicKey);
     }
 
@@ -225,7 +240,7 @@ export class FHEModule {
      * @returns {Uint8Array}
      */
 
-    decrypt(array: Int32Array | Float64Array, secretKey: SecretKey): Uint8Array {
+    decrypt(array: string, secretKey: SecretKey): Uint8Array {
         return this.module.rust_decrypt(array, secretKey);
     }
 
@@ -262,17 +277,17 @@ export class FHEModule {
 
 /**
  * Method that initialize a singleton instance of FHEModule
- * 
+ *
  * @returns Promise<FHEModule>
  */
-const getFheModule = function(): Promise < FHEModule > {
+const getFheModule = function (): Promise<FHEModule> {
     return new Promise((resolve, reject) => {
         (async () => {
-            const module = await import('./src/pkg/index.js');
+            const module = await import("./src/pkg/index.js");
             const FheModule = new FHEModule(module);
             resolve(FheModule);
         })();
-    })
-}
+    });
+};
 
 export default getFheModule;

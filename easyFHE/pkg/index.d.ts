@@ -32,63 +32,63 @@ export function rust_generate_keys(): any[];
 */
 export function rust_encrypt(array: Int32Array, public_key: any): any;
 /**
-* @param {Int32Array} array
+* @param {string} array
 * @param {any} secret_key
 * @returns {any}
 */
-export function rust_decrypt(array: Int32Array, secret_key: any): any;
+export function rust_decrypt(array: string, secret_key: any): any;
 /**
-* @param {Int32Array} cipher_text1
-* @param {Int32Array} cipher_text2
+* @param {string} cipher_text1
+* @param {string} cipher_text2
 * @returns {any}
 */
-export function rust_add_ciphers(cipher_text1: Int32Array, cipher_text2: Int32Array): any;
+export function rust_add_ciphers(cipher_text1: string, cipher_text2: string): any;
 /**
-* @param {Int32Array} cipher_text1
-* @param {Int32Array} cipher_text2
+* @param {string} cipher_text1
+* @param {string} cipher_text2
 * @returns {any}
 */
-export function rust_sub_ciphers(cipher_text1: Int32Array, cipher_text2: Int32Array): any;
+export function rust_sub_ciphers(cipher_text1: string, cipher_text2: string): any;
 /**
-* @param {Int32Array} cipher_text1
-* @param {Int32Array} cipher_text2
+* @param {string} cipher_text1
+* @param {string} cipher_text2
 * @returns {any}
 */
-export function rust_multiply_ciphers(cipher_text1: Int32Array, cipher_text2: Int32Array): any;
+export function rust_multiply_ciphers(cipher_text1: string, cipher_text2: string): any;
 /**
-* @param {Int32Array} cipher_text1
+* @param {string} cipher_text1
 * @returns {any}
 */
-export function rust_square_cipher(cipher_text1: Int32Array): any;
+export function rust_square_cipher(cipher_text1: string): any;
 /**
-* @param {Int32Array} cipher_text1
+* @param {string} cipher_text1
 * @param {number} power
 * @returns {any}
 */
-export function rust_exponentiate_cipher(cipher_text1: Int32Array, power: number): any;
+export function rust_exponentiate_cipher(cipher_text1: string, power: number): any;
 /**
-* @param {Int32Array} cipher_text1
+* @param {string} cipher_text1
 * @returns {any}
 */
-export function rust_negate_cipher(cipher_text1: Int32Array): any;
+export function rust_negate_cipher(cipher_text1: string): any;
 /**
-* @param {Int32Array} cipher_text
+* @param {string} cipher_text
 * @param {Int32Array} plain_text
 * @returns {any}
 */
-export function rust_add_plain(cipher_text: Int32Array, plain_text: Int32Array): any;
+export function rust_add_plain(cipher_text: string, plain_text: Int32Array): any;
 /**
-* @param {Int32Array} cipher_text
+* @param {string} cipher_text
 * @param {Int32Array} plain_text
 * @returns {any}
 */
-export function rust_sub_plain(cipher_text: Int32Array, plain_text: Int32Array): any;
+export function rust_sub_plain(cipher_text: string, plain_text: Int32Array): any;
 /**
-* @param {Int32Array} cipher_text
+* @param {string} cipher_text
 * @param {Int32Array} plain_text
 * @returns {any}
 */
-export function rust_multiply_plain(cipher_text: Int32Array, plain_text: Int32Array): any;
+export function rust_multiply_plain(cipher_text: string, plain_text: Int32Array): any;
 /**
 */
 export function rust_deallocate_context(): void;
@@ -101,3 +101,9 @@ export function rust_deallocate_seal_library(): void;
 /**
 */
 export function rust_deallocate_module(): void;
+/**
+* @param {string} cipher_text1
+* @param {string} scheme
+* @returns {any}
+*/
+export function rust_sum_elements(cipher_text1: string, scheme: string): any;

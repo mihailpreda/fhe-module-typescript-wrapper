@@ -1,4 +1,4 @@
-import { js_to_rust_initialize, js_to_rust_set_encryption_scheme, js_to_rust_setup_context, js_to_rust_fast_setup, js_to_rust_generate_keys, js_to_rust_encrypt, js_to_rust_decrypt, js_to_rust_add_ciphers, js_to_rust_sub_ciphers, js_to_rust_multiply_ciphers, js_to_rust_square_cipher, js_to_rust_exponentiate_cipher, js_to_rust_negate_cipher, js_to_rust_add_plain, js_to_rust_sub_plain, js_to_rust_multiply_plain } from './snippets/rust-webpack-template-eb3e344350874cf2/js/bindings.js';
+import { js_to_rust_initialize, js_to_rust_set_encryption_scheme, js_to_rust_setup_context, js_to_rust_fast_setup, js_to_rust_generate_keys, js_to_rust_encrypt, js_to_rust_decrypt, js_to_rust_add_ciphers, js_to_rust_sub_ciphers, js_to_rust_multiply_ciphers, js_to_rust_square_cipher, js_to_rust_exponentiate_cipher, js_to_rust_negate_cipher, js_to_rust_add_plain, js_to_rust_sub_plain, js_to_rust_multiply_plain, js_to_rust_sum_elements } from './snippets/rust-webpack-template-eb3e344350874cf2/js/bindings.js';
 import * as wasm from './index_bg.wasm';
 
 const heap = new Array(32).fill(undefined);
@@ -318,100 +318,100 @@ export function rust_encrypt(array, public_key) {
 }
 
 /**
-* @param {Int32Array} array
+* @param {string} array
 * @param {any} secret_key
 * @returns {any}
 */
 export function rust_decrypt(array, secret_key) {
-    var ptr0 = passArray32ToWasm0(array, wasm.__wbindgen_malloc);
+    var ptr0 = passStringToWasm0(array, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len0 = WASM_VECTOR_LEN;
     var ret = wasm.rust_decrypt(ptr0, len0, addHeapObject(secret_key));
     return takeObject(ret);
 }
 
 /**
-* @param {Int32Array} cipher_text1
-* @param {Int32Array} cipher_text2
+* @param {string} cipher_text1
+* @param {string} cipher_text2
 * @returns {any}
 */
 export function rust_add_ciphers(cipher_text1, cipher_text2) {
-    var ptr0 = passArray32ToWasm0(cipher_text1, wasm.__wbindgen_malloc);
+    var ptr0 = passStringToWasm0(cipher_text1, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len0 = WASM_VECTOR_LEN;
-    var ptr1 = passArray32ToWasm0(cipher_text2, wasm.__wbindgen_malloc);
+    var ptr1 = passStringToWasm0(cipher_text2, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len1 = WASM_VECTOR_LEN;
     var ret = wasm.rust_add_ciphers(ptr0, len0, ptr1, len1);
     return takeObject(ret);
 }
 
 /**
-* @param {Int32Array} cipher_text1
-* @param {Int32Array} cipher_text2
+* @param {string} cipher_text1
+* @param {string} cipher_text2
 * @returns {any}
 */
 export function rust_sub_ciphers(cipher_text1, cipher_text2) {
-    var ptr0 = passArray32ToWasm0(cipher_text1, wasm.__wbindgen_malloc);
+    var ptr0 = passStringToWasm0(cipher_text1, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len0 = WASM_VECTOR_LEN;
-    var ptr1 = passArray32ToWasm0(cipher_text2, wasm.__wbindgen_malloc);
+    var ptr1 = passStringToWasm0(cipher_text2, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len1 = WASM_VECTOR_LEN;
     var ret = wasm.rust_sub_ciphers(ptr0, len0, ptr1, len1);
     return takeObject(ret);
 }
 
 /**
-* @param {Int32Array} cipher_text1
-* @param {Int32Array} cipher_text2
+* @param {string} cipher_text1
+* @param {string} cipher_text2
 * @returns {any}
 */
 export function rust_multiply_ciphers(cipher_text1, cipher_text2) {
-    var ptr0 = passArray32ToWasm0(cipher_text1, wasm.__wbindgen_malloc);
+    var ptr0 = passStringToWasm0(cipher_text1, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len0 = WASM_VECTOR_LEN;
-    var ptr1 = passArray32ToWasm0(cipher_text2, wasm.__wbindgen_malloc);
+    var ptr1 = passStringToWasm0(cipher_text2, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len1 = WASM_VECTOR_LEN;
     var ret = wasm.rust_multiply_ciphers(ptr0, len0, ptr1, len1);
     return takeObject(ret);
 }
 
 /**
-* @param {Int32Array} cipher_text1
+* @param {string} cipher_text1
 * @returns {any}
 */
 export function rust_square_cipher(cipher_text1) {
-    var ptr0 = passArray32ToWasm0(cipher_text1, wasm.__wbindgen_malloc);
+    var ptr0 = passStringToWasm0(cipher_text1, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len0 = WASM_VECTOR_LEN;
     var ret = wasm.rust_square_cipher(ptr0, len0);
     return takeObject(ret);
 }
 
 /**
-* @param {Int32Array} cipher_text1
+* @param {string} cipher_text1
 * @param {number} power
 * @returns {any}
 */
 export function rust_exponentiate_cipher(cipher_text1, power) {
-    var ptr0 = passArray32ToWasm0(cipher_text1, wasm.__wbindgen_malloc);
+    var ptr0 = passStringToWasm0(cipher_text1, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len0 = WASM_VECTOR_LEN;
     var ret = wasm.rust_exponentiate_cipher(ptr0, len0, power);
     return takeObject(ret);
 }
 
 /**
-* @param {Int32Array} cipher_text1
+* @param {string} cipher_text1
 * @returns {any}
 */
 export function rust_negate_cipher(cipher_text1) {
-    var ptr0 = passArray32ToWasm0(cipher_text1, wasm.__wbindgen_malloc);
+    var ptr0 = passStringToWasm0(cipher_text1, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len0 = WASM_VECTOR_LEN;
     var ret = wasm.rust_negate_cipher(ptr0, len0);
     return takeObject(ret);
 }
 
 /**
-* @param {Int32Array} cipher_text
+* @param {string} cipher_text
 * @param {Int32Array} plain_text
 * @returns {any}
 */
 export function rust_add_plain(cipher_text, plain_text) {
-    var ptr0 = passArray32ToWasm0(cipher_text, wasm.__wbindgen_malloc);
+    var ptr0 = passStringToWasm0(cipher_text, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len0 = WASM_VECTOR_LEN;
     var ptr1 = passArray32ToWasm0(plain_text, wasm.__wbindgen_malloc);
     var len1 = WASM_VECTOR_LEN;
@@ -420,12 +420,12 @@ export function rust_add_plain(cipher_text, plain_text) {
 }
 
 /**
-* @param {Int32Array} cipher_text
+* @param {string} cipher_text
 * @param {Int32Array} plain_text
 * @returns {any}
 */
 export function rust_sub_plain(cipher_text, plain_text) {
-    var ptr0 = passArray32ToWasm0(cipher_text, wasm.__wbindgen_malloc);
+    var ptr0 = passStringToWasm0(cipher_text, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len0 = WASM_VECTOR_LEN;
     var ptr1 = passArray32ToWasm0(plain_text, wasm.__wbindgen_malloc);
     var len1 = WASM_VECTOR_LEN;
@@ -434,12 +434,12 @@ export function rust_sub_plain(cipher_text, plain_text) {
 }
 
 /**
-* @param {Int32Array} cipher_text
+* @param {string} cipher_text
 * @param {Int32Array} plain_text
 * @returns {any}
 */
 export function rust_multiply_plain(cipher_text, plain_text) {
-    var ptr0 = passArray32ToWasm0(cipher_text, wasm.__wbindgen_malloc);
+    var ptr0 = passStringToWasm0(cipher_text, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len0 = WASM_VECTOR_LEN;
     var ptr1 = passArray32ToWasm0(plain_text, wasm.__wbindgen_malloc);
     var len1 = WASM_VECTOR_LEN;
@@ -471,6 +471,20 @@ export function rust_deallocate_module() {
     wasm.rust_deallocate_module();
 }
 
+/**
+* @param {string} cipher_text1
+* @param {string} scheme
+* @returns {any}
+*/
+export function rust_sum_elements(cipher_text1, scheme) {
+    var ptr0 = passStringToWasm0(cipher_text1, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    var len0 = WASM_VECTOR_LEN;
+    var ptr1 = passStringToWasm0(scheme, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    var len1 = WASM_VECTOR_LEN;
+    var ret = wasm.rust_sum_elements(ptr0, len0, ptr1, len1);
+    return takeObject(ret);
+}
+
 function handleError(f, args) {
     try {
         return f.apply(this, args);
@@ -478,7 +492,7 @@ function handleError(f, args) {
         wasm.__wbindgen_exn_store(addHeapObject(e));
     }
 }
-function __wbg_adapter_73(arg0, arg1, arg2, arg3) {
+function __wbg_adapter_76(arg0, arg1, arg2, arg3) {
     wasm.wasm_bindgen__convert__closures__invoke2_mut__hb6b1ce70fe4e6087(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
 }
 
@@ -489,7 +503,7 @@ export function __wbg_new_4beacc9c71572250(arg0, arg1) {
             const a = state0.a;
             state0.a = 0;
             try {
-                return __wbg_adapter_73(a, state0.b, arg0, arg1);
+                return __wbg_adapter_76(a, state0.b, arg0, arg1);
             } finally {
                 state0.a = a;
             }
@@ -555,85 +569,112 @@ export function __wbg_jstorustencrypt_b470b6aa571e43c2(arg0, arg1, arg2) {
 };
 
 export function __wbg_jstorustdecrypt_b337cdaa5b411ded(arg0, arg1, arg2) {
-    var v0 = getArrayI32FromWasm0(arg0, arg1).slice();
-    wasm.__wbindgen_free(arg0, arg1 * 4);
-    var ret = js_to_rust_decrypt(v0, takeObject(arg2));
-    return addHeapObject(ret);
+    try {
+        var ret = js_to_rust_decrypt(getStringFromWasm0(arg0, arg1), takeObject(arg2));
+        return addHeapObject(ret);
+    } finally {
+        wasm.__wbindgen_free(arg0, arg1);
+    }
 };
 
 export function __wbg_jstorustaddciphers_e814452704cd45eb(arg0, arg1, arg2, arg3) {
-    var v0 = getArrayI32FromWasm0(arg0, arg1).slice();
-    wasm.__wbindgen_free(arg0, arg1 * 4);
-    var v1 = getArrayI32FromWasm0(arg2, arg3).slice();
-    wasm.__wbindgen_free(arg2, arg3 * 4);
-    var ret = js_to_rust_add_ciphers(v0, v1);
-    return addHeapObject(ret);
+    try {
+        var ret = js_to_rust_add_ciphers(getStringFromWasm0(arg0, arg1), getStringFromWasm0(arg2, arg3));
+        return addHeapObject(ret);
+    } finally {
+        wasm.__wbindgen_free(arg0, arg1);
+        wasm.__wbindgen_free(arg2, arg3);
+    }
 };
 
 export function __wbg_jstorustsubciphers_eb464c3bb65ea282(arg0, arg1, arg2, arg3) {
-    var v0 = getArrayI32FromWasm0(arg0, arg1).slice();
-    wasm.__wbindgen_free(arg0, arg1 * 4);
-    var v1 = getArrayI32FromWasm0(arg2, arg3).slice();
-    wasm.__wbindgen_free(arg2, arg3 * 4);
-    var ret = js_to_rust_sub_ciphers(v0, v1);
-    return addHeapObject(ret);
+    try {
+        var ret = js_to_rust_sub_ciphers(getStringFromWasm0(arg0, arg1), getStringFromWasm0(arg2, arg3));
+        return addHeapObject(ret);
+    } finally {
+        wasm.__wbindgen_free(arg0, arg1);
+        wasm.__wbindgen_free(arg2, arg3);
+    }
 };
 
 export function __wbg_jstorustmultiplyciphers_65e755303b344247(arg0, arg1, arg2, arg3) {
-    var v0 = getArrayI32FromWasm0(arg0, arg1).slice();
-    wasm.__wbindgen_free(arg0, arg1 * 4);
-    var v1 = getArrayI32FromWasm0(arg2, arg3).slice();
-    wasm.__wbindgen_free(arg2, arg3 * 4);
-    var ret = js_to_rust_multiply_ciphers(v0, v1);
-    return addHeapObject(ret);
+    try {
+        var ret = js_to_rust_multiply_ciphers(getStringFromWasm0(arg0, arg1), getStringFromWasm0(arg2, arg3));
+        return addHeapObject(ret);
+    } finally {
+        wasm.__wbindgen_free(arg0, arg1);
+        wasm.__wbindgen_free(arg2, arg3);
+    }
 };
 
 export function __wbg_jstorustsquarecipher_859129474a84be3d(arg0, arg1) {
-    var v0 = getArrayI32FromWasm0(arg0, arg1).slice();
-    wasm.__wbindgen_free(arg0, arg1 * 4);
-    var ret = js_to_rust_square_cipher(v0);
-    return addHeapObject(ret);
+    try {
+        var ret = js_to_rust_square_cipher(getStringFromWasm0(arg0, arg1));
+        return addHeapObject(ret);
+    } finally {
+        wasm.__wbindgen_free(arg0, arg1);
+    }
 };
 
 export function __wbg_jstorustexponentiatecipher_0df4bf782e8a835c(arg0, arg1, arg2) {
-    var v0 = getArrayI32FromWasm0(arg0, arg1).slice();
-    wasm.__wbindgen_free(arg0, arg1 * 4);
-    var ret = js_to_rust_exponentiate_cipher(v0, arg2);
-    return addHeapObject(ret);
+    try {
+        var ret = js_to_rust_exponentiate_cipher(getStringFromWasm0(arg0, arg1), arg2);
+        return addHeapObject(ret);
+    } finally {
+        wasm.__wbindgen_free(arg0, arg1);
+    }
 };
 
 export function __wbg_jstorustnegatecipher_104436fc8fb90f10(arg0, arg1) {
-    var v0 = getArrayI32FromWasm0(arg0, arg1).slice();
-    wasm.__wbindgen_free(arg0, arg1 * 4);
-    var ret = js_to_rust_negate_cipher(v0);
-    return addHeapObject(ret);
+    try {
+        var ret = js_to_rust_negate_cipher(getStringFromWasm0(arg0, arg1));
+        return addHeapObject(ret);
+    } finally {
+        wasm.__wbindgen_free(arg0, arg1);
+    }
 };
 
 export function __wbg_jstorustaddplain_367be544767385e6(arg0, arg1, arg2, arg3) {
-    var v0 = getArrayI32FromWasm0(arg0, arg1).slice();
-    wasm.__wbindgen_free(arg0, arg1 * 4);
-    var v1 = getArrayI32FromWasm0(arg2, arg3).slice();
-    wasm.__wbindgen_free(arg2, arg3 * 4);
-    var ret = js_to_rust_add_plain(v0, v1);
-    return addHeapObject(ret);
+    try {
+        var v0 = getArrayI32FromWasm0(arg2, arg3).slice();
+        wasm.__wbindgen_free(arg2, arg3 * 4);
+        var ret = js_to_rust_add_plain(getStringFromWasm0(arg0, arg1), v0);
+        return addHeapObject(ret);
+    } finally {
+        wasm.__wbindgen_free(arg0, arg1);
+    }
 };
 
 export function __wbg_jstorustsubplain_071e11ee489f039b(arg0, arg1, arg2, arg3) {
-    var v0 = getArrayI32FromWasm0(arg0, arg1).slice();
-    wasm.__wbindgen_free(arg0, arg1 * 4);
-    var v1 = getArrayI32FromWasm0(arg2, arg3).slice();
-    wasm.__wbindgen_free(arg2, arg3 * 4);
-    var ret = js_to_rust_sub_plain(v0, v1);
-    return addHeapObject(ret);
+    try {
+        var v0 = getArrayI32FromWasm0(arg2, arg3).slice();
+        wasm.__wbindgen_free(arg2, arg3 * 4);
+        var ret = js_to_rust_sub_plain(getStringFromWasm0(arg0, arg1), v0);
+        return addHeapObject(ret);
+    } finally {
+        wasm.__wbindgen_free(arg0, arg1);
+    }
 };
 
 export function __wbg_jstorustmultiplyplain_a6956c68ceb99dc0(arg0, arg1, arg2, arg3) {
-    var v0 = getArrayI32FromWasm0(arg0, arg1).slice();
-    wasm.__wbindgen_free(arg0, arg1 * 4);
-    var v1 = getArrayI32FromWasm0(arg2, arg3).slice();
-    wasm.__wbindgen_free(arg2, arg3 * 4);
-    var ret = js_to_rust_multiply_plain(v0, v1);
-    return addHeapObject(ret);
+    try {
+        var v0 = getArrayI32FromWasm0(arg2, arg3).slice();
+        wasm.__wbindgen_free(arg2, arg3 * 4);
+        var ret = js_to_rust_multiply_plain(getStringFromWasm0(arg0, arg1), v0);
+        return addHeapObject(ret);
+    } finally {
+        wasm.__wbindgen_free(arg0, arg1);
+    }
+};
+
+export function __wbg_jstorustsumelements_9a9edc6e5fc06044(arg0, arg1, arg2, arg3) {
+    try {
+        var ret = js_to_rust_sum_elements(getStringFromWasm0(arg0, arg1), getStringFromWasm0(arg2, arg3));
+        return addHeapObject(ret);
+    } finally {
+        wasm.__wbindgen_free(arg0, arg1);
+        wasm.__wbindgen_free(arg2, arg3);
+    }
 };
 
 export function __wbg_jstorustinitialize_90a373980a3201c9() {
@@ -683,7 +724,7 @@ export function __wbg_resolve_4f8f547f26b30b27(arg0) {
     return addHeapObject(ret);
 };
 
-export function __wbindgen_closure_wrapper572(arg0, arg1, arg2) {
+export function __wbindgen_closure_wrapper574(arg0, arg1, arg2) {
     var ret = makeMutClosure(arg0, arg1, 20, __wbg_adapter_10);
     return addHeapObject(ret);
 };
