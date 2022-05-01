@@ -1,3 +1,6 @@
+import { PublicKey } from 'node-seal/implementation/public-key';
+import { SecretKey } from 'node-seal/implementation/secret-key';
+
 export class Plain {
     private module: any;
 
@@ -199,7 +202,7 @@ export class FHEModule {
      * 
      * @returns {Array<Object>}
      */
-    generateKeys(): Array < Object > {
+    generateKeys(): [PublicKey, SecretKey] {
         return this.module.rust_generate_keys();
     }
     /**
@@ -208,7 +211,7 @@ export class FHEModule {
      * @returns {Uint8Array}
      */
 
-    encrypt(array: Int32Array, publicKey: Object): Uint8Array {
+    encrypt(array: Int32Array, publicKey: PublicKey ): Uint8Array {
         return this.module.rust_encrypt(array, publicKey);
     }
 
@@ -218,7 +221,7 @@ export class FHEModule {
      * @returns {Uint8Array}
      */
 
-    decrypt(array: Int32Array, secretKey: Object): Uint8Array {
+    decrypt(array: Int32Array, secretKey: SecretKey ): Uint8Array {
         return this.module.rust_decrypt(array, secretKey);
     }
 
@@ -261,7 +264,7 @@ export class FHEModule {
 const getFheModule = function(): Promise < FHEModule > {
     return new Promise((resolve, reject) => {
         (async () => {
-            const module = await import('./pkg/index.js');
+            const module = await import('./src/pkg/index.js');
             const FheModule = new FHEModule(module);
             resolve(FheModule);
         })();

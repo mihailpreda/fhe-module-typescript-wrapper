@@ -1,4 +1,4 @@
-import SEAL from "node-seal";
+import SEAL from 'node-seal';
 let seal;
 let parms;
 let context;
@@ -10,13 +10,13 @@ export const js_to_rust_initialize = async () => {
 
 export const js_to_rust_set_encryption_scheme = (scheme) => {
     switch (scheme) {
-        case "bfv":
+        case 'bfv':
             parms = seal.EncryptionParameters(seal.SchemeType.bfv);
             return parms;
-        case "ckks":
+        case 'ckks':
             parms = seal.EncryptionParameters(seal.SchemeType.ckks);
             return parms;
-        case "bgv":
+        case 'bgv':
             parms = seal.EncryptionParameters(seal.SchemeType.bgv);
             return parms;
         default:
@@ -32,13 +32,13 @@ export const js_to_rust_setup_context = (
     securityLevel
 ) => {
     switch (securityLevel) {
-        case "tc128":
+        case 'tc128':
             securityLevel = seal.SecurityLevel.tc128;
             break;
-        case "tc192":
+        case 'tc192':
             securityLevel = seal.SecurityLevel.tc192;
             break;
-        case "tc256":
+        case 'tc256':
             securityLevel = seal.SecurityLevel.tc256;
             break;
         default:
@@ -76,13 +76,13 @@ export const js_to_rust_setup_context = (
 export const js_to_rust_fast_setup = (scheme='bfv', securityLevel='tc128', processingSpeed='normal') => {
 
     switch (scheme) {
-        case "bfv":
+        case 'bfv':
             parms = seal.EncryptionParameters(seal.SchemeType.bfv);
             break;
-        case "ckks":
+        case 'ckks':
             parms = seal.EncryptionParameters(seal.SchemeType.ckks);
             break;
-        case "bgv":
+        case 'bgv':
             parms = seal.EncryptionParameters(seal.SchemeType.bgv);
             break;
         default:
@@ -329,19 +329,19 @@ export const js_to_rust_fast_setup = (scheme='bfv', securityLevel='tc128', proce
         },
     }
     switch (securityLevel) {
-        case "tc128":
+        case 'tc128':
             polyModulusDegree = configurations[scheme][securityLevel][processingSpeed].polyModulusDegree;
             bitSizes = configurations[scheme][securityLevel][processingSpeed].bitSizes;
             bitSize = configurations[scheme][securityLevel][processingSpeed].bitSize;
             securityLevel = seal.SecurityLevel.tc128;
             break;
-        case "tc192":
+        case 'tc192':
             polyModulusDegree = configurations[scheme][securityLevel][processingSpeed].polyModulusDegree;
             bitSizes = configurations[scheme][securityLevel][processingSpeed].bitSizes;
             bitSize = configurations[scheme][securityLevel][processingSpeed].bitSize;
             securityLevel = seal.SecurityLevel.tc192;
             break;
-        case "tc256":
+        case 'tc256':
             polyModulusDegree = configurations[scheme][securityLevel][processingSpeed].polyModulusDegree;
             bitSizes = configurations[scheme][securityLevel][processingSpeed].bitSizes;
             bitSize = configurations[scheme][securityLevel][processingSpeed].bitSize;
@@ -683,13 +683,13 @@ export const js_to_rust_deallocate_module = () => {
 // export const js_to_rust_sum_elements = (cipherText1, scheme) => {
 //   let schemeType;
 //   switch (scheme) {
-//     case "bfv":
+//     case 'bfv':
 //       schemeType = seal.SchemeType.bfv;
 //       break;
-//     case "ckks":
+//     case 'ckks':
 //       schemeType = seal.SchemeType.ckks;
 //       break;
-//     case "bgv":
+//     case 'bgv':
 //       schemeType = seal.SchemeType.bgv;
 //       break;
 //     default:

@@ -1,11 +1,10 @@
 {
     "compilerOptions": {
-      "target": "ES6",
+      "target": "esnext",
       "module": "CommonJS",
       "outDir": "./fhe",
-      "rootDir": "./src",
       "strict": true,
       "declaration": true,
-    },
- 
+      "skipLibCheck": true,
+    }
 }

@@ -1,3 +1,5 @@
+import { PublicKey } from 'node-seal/implementation/public-key';
+import { SecretKey } from 'node-seal/implementation/secret-key';
 export declare class Plain {
     private module;
     constructor(module: any);
@@ -121,19 +123,19 @@ export declare class FHEModule {
      *
      * @returns {Array<Object>}
      */
-    generateKeys(): Array<Object>;
+    generateKeys(): [PublicKey, SecretKey];
     /**
      * @param {Int32Array} array
      * @param {Object} publicKey
      * @returns {Uint8Array}
      */
-    encrypt(array: Int32Array, publicKey: Object): Uint8Array;
+    encrypt(array: Int32Array, publicKey: PublicKey): Uint8Array;
     /**
      * @param {Int32Array} array
      * @param {Object} secretKey
      * @returns {Uint8Array}
      */
-    decrypt(array: Int32Array, secretKey: Object): Uint8Array;
+    decrypt(array: Int32Array, secretKey: SecretKey): Uint8Array;
     /**
      * Deallocates the context
      */

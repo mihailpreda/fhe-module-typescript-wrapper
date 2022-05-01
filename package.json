@@ -8,7 +8,8 @@
   },
   "author": "Preda Mihail Irinel <mihaipreda1997@gmail.com>",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
+    "node-seal": "^5.0.0",
     "typescript": "^4.6.4"
   }
 }
