@@ -1,5 +1,9 @@
-import { PublicKey } from 'node-seal/implementation/public-key';
-import { SecretKey } from 'node-seal/implementation/secret-key';
+import {
+    PublicKey
+} from 'node-seal/implementation/public-key';
+import {
+    SecretKey
+} from 'node-seal/implementation/secret-key';
 
 export class Plain {
     private module: any;
@@ -10,32 +14,32 @@ export class Plain {
     /**
      * Method that adds plain data to encrypted data 
      * @param {Int32Array} cipherText
-     * @param {Int32Array} plainText
+     * @param {Int32Array | Float64Array} plainText
      * @returns {Uint8Array}
      */
-    addCipher(cipherText: Int32Array, plainText: Int32Array): Uint8Array {
+    add(cipherText: Int32Array, plainText: Int32Array | Float64Array): Uint8Array {
         return this.module.rust_add_plain(cipherText, plainText);
     }
 
     /**
      * Method that subtracts plain data to encrypted data 
      * @param {Int32Array} cipherText
-     * @param {Int32Array} plainText
+     * @param {Int32Array | Float64Array} plainText
      * @returns {Uint8Array}
      */
 
-    subCipher(cipherText: Int32Array, plainText: Int32Array): Uint8Array {
+    sub(cipherText: Int32Array, plainText: Int32Array | Float64Array): Uint8Array {
         return this.module.rust_sub_plain(cipherText, plainText);
     }
 
     /**
      * Method that multiply encrypted data with plain data
      * @param {Int32Array} cipherText
-     * @param {Int32Array} plainText
+     * @param {Int32Array | Float64Array} plainText
      * @returns {Uint8Array}
      */
 
-    multiplyCipher(cipherText: Int32Array, plainText: Int32Array): Uint8Array {
+    multiply(cipherText: Int32Array, plainText: Int32Array | Float64Array): Uint8Array {
         return this.module.rust_multiply_plain(cipherText, plainText);
     }
 
@@ -55,23 +59,23 @@ export class Cipher {
     }
     /**
      * Method that adds two ciphertexts 
-     * @param {Int32Array} cipherText1
-     * @param {Int32Array} cipherText2
+     * @param {Int32Array | Float64Array} cipherText1
+     * @param {Int32Array | Float64Array} cipherText2
      * @returns {Uint8Array}
      */
 
-    add(cipherText1: Int32Array, cipherText2: Int32Array): Uint8Array {
+    add(cipherText1: Int32Array | Float64Array, cipherText2: Int32Array | Float64Array): Uint8Array {
         return this.module.rust_add_ciphers(cipherText1, cipherText2);
     }
 
     /**
      * Method that subtracts two ciphertexts
-     * @param {Int32Array} cipherText1
-     * @param {Int32Array} cipherText2
+     * @param {Int32Array | Float64Array} cipherText1
+     * @param {Int32Array | Float64Array} cipherText2
      * @returns {Uint8Array}
      */
 
-    sub(cipherText1: Int32Array, cipherText2: Int32Array): Uint8Array {
+    sub(cipherText1: Int32Array | Float64Array, cipherText2: Int32Array | Float64Array): Uint8Array {
         return this.module.rust_sub_ciphers(cipherText1, cipherText2);
     }
 
@@ -79,46 +83,46 @@ export class Cipher {
 
     /**
      * Method that multiplies two ciphertexts
-     * @param {Int32Array} cipherText1
-     * @param {Int32Array} cipherText2
+     * @param {Int32Array | Float64Array} cipherText1
+     * @param {Int32Array | Float64Array} cipherText2
      * @returns {Uint8Array}
      */
 
-    multiply(cipherText1: Int32Array, cipherText2: Int32Array): Uint8Array {
+    multiply(cipherText1: Int32Array | Float64Array, cipherText2: Int32Array | Float64Array): Uint8Array {
         return this.module.rust_multiply_ciphers(cipherText1, cipherText2);
     }
 
 
     /**
      * Method that squares a ciphertext
-     * @param {Int32Array} cipherText
+     * @param {Int32Array | Float64Array} cipherText
      * @returns {Uint8Array}
      */
 
-    square(cipherText: Int32Array): Uint8Array {
+    square(cipherText: Int32Array | Float64Array): Uint8Array {
         return this.module.rust_square_cipher(cipherText);
     }
 
 
     /**
      * Method that exponentatiates a ciphertext to a certain power
-     * @param {Int32Array} cipherText
+     * @param {Int32Array | Float64Array} cipherText
      * @param {number} power
      * @returns {Uint8Array}
      */
 
-    exponentiate(cipherText: Int32Array, power: number): Uint8Array {
+    exponentiate(cipherText: Int32Array | Float64Array, power: number): Uint8Array {
         return this.module.rust_exponentiate_cipher(cipherText, power);
     }
 
 
     /**
      * Method that inverts all the values of a ciphertext
-     * @param {Int32Array} cipherText
+     * @param {Int32Array | Float64Array} cipherText
      * @returns {Uint8Array}
      */
 
-    negate(cipherText: Int32Array): Uint8Array {
+    negate(cipherText: Int32Array | Float64Array): Uint8Array {
         return this.module.rust_negate_cipher(cipherText);
     }
 
@@ -206,22 +210,22 @@ export class FHEModule {
         return this.module.rust_generate_keys();
     }
     /**
-     * @param {Int32Array} array
+     * @param {Int32Array | Float64Array} array
      * @param {Object} publicKey
      * @returns {Uint8Array}
      */
 
-    encrypt(array: Int32Array, publicKey: PublicKey ): Uint8Array {
+    encrypt(array: Int32Array | Float64Array, publicKey: PublicKey): Uint8Array {
         return this.module.rust_encrypt(array, publicKey);
     }
 
     /**
-     * @param {Int32Array} array
+     * @param {Int32Array | Float64Array} array
      * @param {Object} secretKey
      * @returns {Uint8Array}
      */
 
-    decrypt(array: Int32Array, secretKey: SecretKey ): Uint8Array {
+    decrypt(array: Int32Array | Float64Array, secretKey: SecretKey): Uint8Array {
         return this.module.rust_decrypt(array, secretKey);
     }
 

@@ -2,7 +2,7 @@
     "compilerOptions": {
       "target": "esnext",
       "module": "CommonJS",
-      "outDir": "./fhe",
+      "outDir": "./easyFHE",
       "strict": true,
       "declaration": true,
       "skipLibCheck": true,

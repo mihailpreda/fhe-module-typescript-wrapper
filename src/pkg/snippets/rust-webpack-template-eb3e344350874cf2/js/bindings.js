@@ -3,6 +3,8 @@ let seal;
 let parms;
 let context;
 
+const isCKKS = () => parms.scheme === seal.SchemeType.ckks;
+
 export const js_to_rust_initialize = async () => {
     seal = await SEAL();
     return seal;
@@ -53,7 +55,7 @@ export const js_to_rust_setup_context = (
         seal.CoeffModulus.Create(polyModulusDegree, Int32Array.from(bitSizes))
     );
 
-    if (parms.scheme !== seal.SchemeType.ckks) {
+    if (!isCKKS()) {
 
         // Set the PlainModulus to a prime of bitSize 20.
         parms.setPlainModulus(seal.PlainModulus.Batching(polyModulusDegree, bitSize));
@@ -383,10 +385,12 @@ export const js_to_rust_generate_keys = () => {
     return [publicKey, secretKey];
 };
 export const js_to_rust_encrypt = (plainText, publicKey) => {
-    const encoder = seal.BatchEncoder(context);
+
+    const encoder = isCKKS() ? seal.CKKSEncoder(context) : seal.BatchEncoder(context);
+
     const encryptor = seal.Encryptor(context, publicKey);
     // Create data to be encrypted
-    const array = Int32Array.from(plainText);
+    const array = isCKKS() ? Float64Array.from(plainText) : Int32Array.from(plainText);
 
     // Encode the Array
     const encodedPlainText = encoder.encode(array);
@@ -410,7 +414,7 @@ export const js_to_rust_decrypt = (cipherText, secretKey) => {
 
     preparedCipherText.loadArray(context, cipherText);
 
-    const encoder = seal.BatchEncoder(context);
+    const encoder = isCKKS() ? seal.CKKSEncoder(context) : seal.BatchEncoder(context);
     const decryptor = seal.Decryptor(context, secretKey);
 
     // Decrypt the CipherText
@@ -586,7 +590,7 @@ export const js_to_rust_add_plain = (cipherText, plainText) => {
     const preparedCipherText = seal.CipherText({
         context: context
     });
-    const encoder = seal.BatchEncoder(context);
+    const encoder = isCKKS() ? seal.CKKSEncoder(context) : seal.BatchEncoder(context);
     const preparedPlainText = encoder.encode(plainText);
     const result = seal.CipherText({
         context: context
@@ -613,7 +617,7 @@ export const js_to_rust_sub_plain = (cipherText, plainText) => {
     const preparedCipherText = seal.CipherText({
         context: context
     });
-    const encoder = seal.BatchEncoder(context);
+    const encoder = isCKKS() ? seal.CKKSEncoder(context) : seal.BatchEncoder(context);
     const preparedPlainText = encoder.encode(plainText);
     const result = seal.CipherText({
         context: context
@@ -640,7 +644,7 @@ export const js_to_rust_multiply_plain = (cipherText, plainText) => {
     const preparedCipherText = seal.CipherText({
         context: context
     });
-    const encoder = seal.BatchEncoder(context);
+    const encoder = isCKKS() ? seal.CKKSEncoder(context) : seal.BatchEncoder(context);
     const preparedPlainText = encoder.encode(plainText);
     const result = seal.CipherText({
         context: context

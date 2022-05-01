@@ -6,24 +6,24 @@ export declare class Plain {
     /**
      * Method that adds plain data to encrypted data
      * @param {Int32Array} cipherText
-     * @param {Int32Array} plainText
+     * @param {Int32Array | Float64Array} plainText
      * @returns {Uint8Array}
      */
-    addCipher(cipherText: Int32Array, plainText: Int32Array): Uint8Array;
+    add(cipherText: Int32Array, plainText: Int32Array | Float64Array): Uint8Array;
     /**
      * Method that subtracts plain data to encrypted data
      * @param {Int32Array} cipherText
-     * @param {Int32Array} plainText
+     * @param {Int32Array | Float64Array} plainText
      * @returns {Uint8Array}
      */
-    subCipher(cipherText: Int32Array, plainText: Int32Array): Uint8Array;
+    sub(cipherText: Int32Array, plainText: Int32Array | Float64Array): Uint8Array;
     /**
      * Method that multiply encrypted data with plain data
      * @param {Int32Array} cipherText
-     * @param {Int32Array} plainText
+     * @param {Int32Array | Float64Array} plainText
      * @returns {Uint8Array}
      */
-    multiplyCipher(cipherText: Int32Array, plainText: Int32Array): Uint8Array;
+    multiply(cipherText: Int32Array, plainText: Int32Array | Float64Array): Uint8Array;
     /**
      * Method that deallocates the wasm module reference
      */
@@ -34,44 +34,44 @@ export declare class Cipher {
     constructor(module: any);
     /**
      * Method that adds two ciphertexts
-     * @param {Int32Array} cipherText1
-     * @param {Int32Array} cipherText2
+     * @param {Int32Array | Float64Array} cipherText1
+     * @param {Int32Array | Float64Array} cipherText2
      * @returns {Uint8Array}
      */
-    add(cipherText1: Int32Array, cipherText2: Int32Array): Uint8Array;
+    add(cipherText1: Int32Array | Float64Array, cipherText2: Int32Array | Float64Array): Uint8Array;
     /**
      * Method that subtracts two ciphertexts
-     * @param {Int32Array} cipherText1
-     * @param {Int32Array} cipherText2
+     * @param {Int32Array | Float64Array} cipherText1
+     * @param {Int32Array | Float64Array} cipherText2
      * @returns {Uint8Array}
      */
-    sub(cipherText1: Int32Array, cipherText2: Int32Array): Uint8Array;
+    sub(cipherText1: Int32Array | Float64Array, cipherText2: Int32Array | Float64Array): Uint8Array;
     /**
      * Method that multiplies two ciphertexts
-     * @param {Int32Array} cipherText1
-     * @param {Int32Array} cipherText2
+     * @param {Int32Array | Float64Array} cipherText1
+     * @param {Int32Array | Float64Array} cipherText2
      * @returns {Uint8Array}
      */
-    multiply(cipherText1: Int32Array, cipherText2: Int32Array): Uint8Array;
+    multiply(cipherText1: Int32Array | Float64Array, cipherText2: Int32Array | Float64Array): Uint8Array;
     /**
      * Method that squares a ciphertext
-     * @param {Int32Array} cipherText
+     * @param {Int32Array | Float64Array} cipherText
      * @returns {Uint8Array}
      */
-    square(cipherText: Int32Array): Uint8Array;
+    square(cipherText: Int32Array | Float64Array): Uint8Array;
     /**
      * Method that exponentatiates a ciphertext to a certain power
-     * @param {Int32Array} cipherText
+     * @param {Int32Array | Float64Array} cipherText
      * @param {number} power
      * @returns {Uint8Array}
      */
-    exponentiate(cipherText: Int32Array, power: number): Uint8Array;
+    exponentiate(cipherText: Int32Array | Float64Array, power: number): Uint8Array;
     /**
      * Method that inverts all the values of a ciphertext
-     * @param {Int32Array} cipherText
+     * @param {Int32Array | Float64Array} cipherText
      * @returns {Uint8Array}
      */
-    negate(cipherText: Int32Array): Uint8Array;
+    negate(cipherText: Int32Array | Float64Array): Uint8Array;
     /**
      * Method that deallocates the wasm module reference
      */
@@ -125,17 +125,17 @@ export declare class FHEModule {
      */
     generateKeys(): [PublicKey, SecretKey];
     /**
-     * @param {Int32Array} array
+     * @param {Int32Array | Float64Array} array
      * @param {Object} publicKey
      * @returns {Uint8Array}
      */
-    encrypt(array: Int32Array, publicKey: PublicKey): Uint8Array;
+    encrypt(array: Int32Array | Float64Array, publicKey: PublicKey): Uint8Array;
     /**
-     * @param {Int32Array} array
+     * @param {Int32Array | Float64Array} array
      * @param {Object} secretKey
      * @returns {Uint8Array}
      */
-    decrypt(array: Int32Array, secretKey: SecretKey): Uint8Array;
+    decrypt(array: Int32Array | Float64Array, secretKey: SecretKey): Uint8Array;
     /**
      * Deallocates the context
      */
