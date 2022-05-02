@@ -5,19 +5,19 @@ export declare enum Scheme {
     NONE = "none",
     BFV = "bfv",
     BGV = "bgv",
-    CKKS = "ckks",
+    CKKS = "ckks"
 }
 export declare enum Security {
     TC128 = "tc128",
     TC192 = "tc192",
-    TC256 = "tc256",
+    TC256 = "tc256"
 }
 export declare enum ProcessingSpeed {
     VERY_FAST = "veryFast",
     FAST = "fast",
     NORMAL = "normal",
     SLOW = "slow",
-    VERY_SLOW = "verySlow",
+    VERY_SLOW = "verySlow"
 }
 export declare class Plain {
     private module;
@@ -101,6 +101,11 @@ export declare class Setup {
     private module;
     constructor(module: any);
     /**
+     * method that will initialize the bindings between EasyFHE, SEAL and node-seal
+     * @returns
+     */
+    initialize(): Promise<FHEModule>;
+    /**
      * Method that sets the homomorphic encryption scheme
      * @param {Scheme} scheme
      */
@@ -137,7 +142,6 @@ export declare class FHEModule {
      * In order to leverage on V8 optimization all class attributes will be initialized in the constructors;
      */
     constructor(module: any);
-    initialize(): Promise<FHEModule>;
     /**
      * Method that generates a pair of (publicKey, secretKey) encryption keys
      *

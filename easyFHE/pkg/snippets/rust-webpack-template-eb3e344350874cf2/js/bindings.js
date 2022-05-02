@@ -5,6 +5,9 @@ let context;
 
 const isCKKS = () => parms.scheme === seal.SchemeType.ckks;
 
+/* SETUP */
+/********************************************************************************************************* */
+
 export const js_to_rust_initialize = async () => {
     seal = await SEAL();
     return seal;
@@ -27,12 +30,7 @@ export const js_to_rust_set_encryption_scheme = (scheme) => {
     }
 };
 
-export const js_to_rust_setup_context = (
-    polyModulusDegree,
-    bitSizes,
-    bitSize,
-    securityLevel
-) => {
+export const js_to_rust_setup_context = (polyModulusDegree, bitSizes, bitSize, securityLevel) => {
     switch (securityLevel) {
         case 'tc128':
             securityLevel = seal.SecurityLevel.tc128;
@@ -51,12 +49,9 @@ export const js_to_rust_setup_context = (
     parms.setPolyModulusDegree(polyModulusDegree);
 
     // Create a suitable set of CoeffModulus primes
-    parms.setCoeffModulus(
-        seal.CoeffModulus.Create(polyModulusDegree, Int32Array.from(bitSizes))
-    );
+    parms.setCoeffModulus(seal.CoeffModulus.Create(polyModulusDegree, Int32Array.from(bitSizes)));
 
     if (!isCKKS()) {
-
         // Set the PlainModulus to a prime of bitSize 20.
         parms.setPlainModulus(seal.PlainModulus.Batching(polyModulusDegree, bitSize));
     }
@@ -75,8 +70,7 @@ export const js_to_rust_setup_context = (
     return context;
 };
 
-export const js_to_rust_fast_setup = (scheme='bfv', securityLevel='tc128', processingSpeed='normal') => {
-
+export const js_to_rust_fast_setup = (scheme = 'bfv', securityLevel = 'tc128', processingSpeed = 'normal') => {
     switch (scheme) {
         case 'bfv':
             parms = seal.EncryptionParameters(seal.SchemeType.bfv);
@@ -100,82 +94,82 @@ export const js_to_rust_fast_setup = (scheme='bfv', securityLevel='tc128', proce
                 veryFast: {
                     polyModulusDegree: 1024,
                     bitSizes: [27],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 fast: {
                     polyModulusDegree: 2048,
                     bitSizes: [54],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 normal: {
                     polyModulusDegree: 4096,
                     bitSizes: [36, 36, 37],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 slow: {
                     polyModulusDegree: 8192,
                     bitSizes: [43, 43, 44, 44, 44],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 verySlow: {
                     polyModulusDegree: 16384,
                     bitSizes: [48, 48, 48, 49, 49, 49, 49, 49, 49],
-                    bitSize: 20
-                }
+                    bitSize: 20,
+                },
             },
             tc192: {
                 veryFast: {
                     polyModulusDegree: 1024,
                     bitSizes: [19],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 fast: {
                     polyModulusDegree: 2048,
                     bitSizes: [37],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 normal: {
                     polyModulusDegree: 4096,
                     bitSizes: [25, 25, 25],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 slow: {
                     polyModulusDegree: 8192,
                     bitSizes: [38, 38, 38, 38],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 verySlow: {
                     polyModulusDegree: 16384,
                     bitSizes: [50, 50, 50, 50, 50, 50],
-                    bitSize: 20
-                }
+                    bitSize: 20,
+                },
             },
             tc256: {
                 veryFast: {
                     polyModulusDegree: 1024,
                     bitSizes: [14],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 fast: {
                     polyModulusDegree: 2048,
                     bitSizes: [29],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 normal: {
                     polyModulusDegree: 4096,
                     bitSizes: [58],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 slow: {
                     polyModulusDegree: 8192,
                     bitSizes: [39, 39, 40],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 verySlow: {
                     polyModulusDegree: 16384,
                     bitSizes: [47, 47, 47, 48, 48],
-                    bitSize: 20
-                }
+                    bitSize: 20,
+                },
             },
         },
         bgv: {
@@ -183,82 +177,82 @@ export const js_to_rust_fast_setup = (scheme='bfv', securityLevel='tc128', proce
                 veryFast: {
                     polyModulusDegree: 1024,
                     bitSizes: [27],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 fast: {
                     polyModulusDegree: 2048,
                     bitSizes: [54],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 normal: {
                     polyModulusDegree: 4096,
                     bitSizes: [36, 36, 37],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 slow: {
                     polyModulusDegree: 8192,
                     bitSizes: [43, 43, 44, 44, 44],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 verySlow: {
                     polyModulusDegree: 16384,
                     bitSizes: [48, 48, 48, 49, 49, 49, 49, 49, 49],
-                    bitSize: 20
-                }
+                    bitSize: 20,
+                },
             },
             tc192: {
                 veryFast: {
                     polyModulusDegree: 1024,
                     bitSizes: [19],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 fast: {
                     polyModulusDegree: 2048,
                     bitSizes: [37],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 normal: {
                     polyModulusDegree: 4096,
                     bitSizes: [25, 25, 25],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 slow: {
                     polyModulusDegree: 8192,
                     bitSizes: [38, 38, 38, 38],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 verySlow: {
                     polyModulusDegree: 16384,
                     bitSizes: [50, 50, 50, 50, 50, 50],
-                    bitSize: 20
-                }
+                    bitSize: 20,
+                },
             },
             tc256: {
                 veryFast: {
                     polyModulusDegree: 1024,
                     bitSizes: [14],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 fast: {
                     polyModulusDegree: 2048,
                     bitSizes: [29],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 normal: {
                     polyModulusDegree: 4096,
                     bitSizes: [58],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 slow: {
                     polyModulusDegree: 8192,
                     bitSizes: [39, 39, 40],
-                    bitSize: 20
+                    bitSize: 20,
                 },
                 verySlow: {
                     polyModulusDegree: 16384,
                     bitSizes: [47, 47, 47, 48, 48],
-                    bitSize: 20
-                }
+                    bitSize: 20,
+                },
             },
         },
         ckks: {
@@ -282,7 +276,7 @@ export const js_to_rust_fast_setup = (scheme='bfv', securityLevel='tc128', proce
                 verySlow: {
                     polyModulusDegree: 16384,
                     bitSizes: [48, 48, 48, 49, 49, 49, 49, 49, 49],
-                }
+                },
             },
             tc192: {
                 veryFast: {
@@ -304,7 +298,7 @@ export const js_to_rust_fast_setup = (scheme='bfv', securityLevel='tc128', proce
                 verySlow: {
                     polyModulusDegree: 16384,
                     bitSizes: [50, 50, 50, 50, 50, 50],
-                }
+                },
             },
             tc256: {
                 veryFast: {
@@ -326,10 +320,10 @@ export const js_to_rust_fast_setup = (scheme='bfv', securityLevel='tc128', proce
                 verySlow: {
                     polyModulusDegree: 16384,
                     bitSizes: [47, 47, 47, 48, 48],
-                }
+                },
             },
         },
-    }
+    };
     switch (securityLevel) {
         case 'tc128':
             polyModulusDegree = configurations[scheme][securityLevel][processingSpeed].polyModulusDegree;
@@ -360,12 +354,9 @@ export const js_to_rust_fast_setup = (scheme='bfv', securityLevel='tc128', proce
     parms.setPolyModulusDegree(polyModulusDegree);
 
     // Create a suitable set of CoeffModulus primes
-    parms.setCoeffModulus(
-        seal.CoeffModulus.Create(polyModulusDegree, Int32Array.from(bitSizes))
-    );
+    parms.setCoeffModulus(seal.CoeffModulus.Create(polyModulusDegree, Int32Array.from(bitSizes)));
 
     if (!isCKKS()) {
-
         // Set the PlainModulus to a prime of bitSize 20.
         parms.setPlainModulus(seal.PlainModulus.Batching(polyModulusDegree, bitSize));
     }
@@ -376,8 +367,11 @@ export const js_to_rust_fast_setup = (scheme='bfv', securityLevel='tc128', proce
         securityLevel // Enforce a security level
     );
     return [parms, context];
-}
+};
 
+/********************************************************************************************************* */
+/* BASIC */
+/********************************************************************************************************* */
 export const js_to_rust_generate_keys = () => {
     const keyGenerator = seal.KeyGenerator(context);
     const publicKey = keyGenerator.createPublicKey();
@@ -385,7 +379,6 @@ export const js_to_rust_generate_keys = () => {
     return [publicKey, secretKey];
 };
 export const js_to_rust_encrypt = (plainText, publicKey) => {
-
     const encoder = isCKKS() ? seal.CKKSEncoder(context) : seal.BatchEncoder(context);
 
     const encryptor = seal.Encryptor(context, publicKey);
@@ -393,7 +386,7 @@ export const js_to_rust_encrypt = (plainText, publicKey) => {
     const array = isCKKS() ? Float64Array.from(plainText) : Int32Array.from(plainText);
 
     // Encode the Array
-    const encodedPlainText = encoder.encode(array);
+    const encodedPlainText = isCKKS() ? encoder.encode(array, Math.pow(2, 20)) : encoder.encode(array);
 
     // Encrypt the PlainText
     const cipherText = encryptor.encrypt(encodedPlainText);
@@ -408,7 +401,7 @@ export const js_to_rust_encrypt = (plainText, publicKey) => {
 export const js_to_rust_decrypt = (cipherText, secretKey) => {
     //need to create a new CipherText with current context
     const preparedCipherText = seal.CipherText({
-        context: context
+        context: context,
     });
 
     preparedCipherText.load(context, cipherText);
@@ -430,16 +423,19 @@ export const js_to_rust_decrypt = (cipherText, secretKey) => {
     return decodedArray;
 };
 
+/********************************************************************************************************* */
+/* CIPHER */
+/********************************************************************************************************* */
 export const js_to_rust_add_ciphers = (cipherText1, cipherText2) => {
     //need to create a new CipherText with current context
     const preparedCipherText1 = seal.CipherText({
-        context: context
+        context: context,
     });
     const preparedCipherText2 = seal.CipherText({
-        context: context
+        context: context,
     });
     const result = seal.CipherText({
-        context: context
+        context: context,
     });
     preparedCipherText1.load(context, cipherText1);
     preparedCipherText2.load(context, cipherText2);
@@ -457,19 +453,19 @@ export const js_to_rust_add_ciphers = (cipherText1, cipherText2) => {
 export const js_to_rust_sub_ciphers = (cipherText1, cipherText2) => {
     //need to create a new CipherText with current context
     const preparedCipherText1 = seal.CipherText({
-        context: context
+        context: context,
     });
     const preparedCipherText2 = seal.CipherText({
-        context: context
+        context: context,
     });
     const result = seal.CipherText({
-        context: context
+        context: context,
     });
     preparedCipherText1.load(context, cipherText1);
     preparedCipherText2.load(context, cipherText2);
     const evaluator = seal.Evaluator(context);
     evaluator.sub(preparedCipherText1, preparedCipherText2, result);
-   
+
     //deallocate memory
     preparedCipherText1.delete();
     preparedCipherText2.delete();
@@ -481,13 +477,13 @@ export const js_to_rust_sub_ciphers = (cipherText1, cipherText2) => {
 export const js_to_rust_multiply_ciphers = (cipherText1, cipherText2) => {
     //need to create a new CipherText with current context
     const preparedCipherText1 = seal.CipherText({
-        context: context
+        context: context,
     });
     const preparedCipherText2 = seal.CipherText({
-        context: context
+        context: context,
     });
     const result = seal.CipherText({
-        context: context
+        context: context,
     });
     preparedCipherText1.load(context, cipherText1);
     preparedCipherText2.load(context, cipherText2);
@@ -505,11 +501,11 @@ export const js_to_rust_multiply_ciphers = (cipherText1, cipherText2) => {
 export const js_to_rust_square_cipher = (cipherText1) => {
     //need to create a new CipherText with current context
     const preparedCipherText1 = seal.CipherText({
-        context: context
+        context: context,
     });
 
     const result = seal.CipherText({
-        context: context
+        context: context,
     });
     preparedCipherText1.load(context, cipherText1);
 
@@ -528,10 +524,10 @@ export const js_to_rust_exponentiate_cipher = (cipherText1, power) => {
     const relinKeys = keyGenerator.createRelinKeys();
     //need to create a new CipherText with current context
     const preparedCipherText1 = seal.CipherText({
-        context: context
+        context: context,
     });
     const result = seal.CipherText({
-        context: context
+        context: context,
     });
     preparedCipherText1.load(context, cipherText1);
 
@@ -550,11 +546,11 @@ export const js_to_rust_exponentiate_cipher = (cipherText1, power) => {
 export const js_to_rust_negate_cipher = (cipherText1) => {
     //need to create a new CipherText with current context
     const preparedCipherText1 = seal.CipherText({
-        context: context
+        context: context,
     });
 
     const result = seal.CipherText({
-        context: context
+        context: context,
     });
     preparedCipherText1.load(context, cipherText1);
 
@@ -568,15 +564,18 @@ export const js_to_rust_negate_cipher = (cipherText1) => {
     return result;
 };
 
+/********************************************************************************************************* */
+/* PLAIN */
+/********************************************************************************************************* */
 export const js_to_rust_add_plain = (cipherText, plainText) => {
     //need to create a new CipherText with current context
     const preparedCipherText = seal.CipherText({
-        context: context
+        context: context,
     });
     const encoder = isCKKS() ? seal.CKKSEncoder(context) : seal.BatchEncoder(context);
     const preparedPlainText = encoder.encode(plainText);
     const result = seal.CipherText({
-        context: context
+        context: context,
     });
     preparedCipherText.load(context, cipherText);
 
@@ -595,12 +594,12 @@ export const js_to_rust_add_plain = (cipherText, plainText) => {
 export const js_to_rust_sub_plain = (cipherText, plainText) => {
     //need to create a new CipherText with current context
     const preparedCipherText = seal.CipherText({
-        context: context
+        context: context,
     });
     const encoder = isCKKS() ? seal.CKKSEncoder(context) : seal.BatchEncoder(context);
     const preparedPlainText = encoder.encode(plainText);
     const result = seal.CipherText({
-        context: context
+        context: context,
     });
     preparedCipherText.load(context, cipherText);
 
@@ -619,12 +618,12 @@ export const js_to_rust_sub_plain = (cipherText, plainText) => {
 export const js_to_rust_multiply_plain = (cipherText, plainText) => {
     //need to create a new CipherText with current context
     const preparedCipherText = seal.CipherText({
-        context: context
+        context: context,
     });
     const encoder = isCKKS() ? seal.CKKSEncoder(context) : seal.BatchEncoder(context);
     const preparedPlainText = encoder.encode(plainText);
     const result = seal.CipherText({
-        context: context
+        context: context,
     });
     preparedCipherText.load(context, cipherText);
 
@@ -639,49 +638,53 @@ export const js_to_rust_multiply_plain = (cipherText, plainText) => {
 
     return result;
 };
-
+/********************************************************************************************************* */
+/* MEMORY MANAGEMENT */
+/********************************************************************************************************* */
 export const js_to_rust_deallocate_context = () => {
     context.delete();
-}
+};
 
 export const js_to_rust_deallocate_parameters = () => {
     parms.delete();
-}
+};
 
 export const js_to_rust_deallocate_seal_library = () => {
     seal.delete();
-}
+};
 
 export const js_to_rust_deallocate_module = () => {
     js_to_rust_deallocate_context();
     js_to_rust_deallocate_parameters();
     seal = null;
-}
-
+};
+/********************************************************************************************************* */
+/* Experimental */
+/********************************************************************************************************* */
 export const js_to_rust_sum_elements = (cipherText1, scheme) => {
-  let schemeType;
-  switch (scheme) {
-    case 'bfv':
-      schemeType = seal.SchemeType.bfv;
-      break;
-    case 'ckks':
-      schemeType = seal.SchemeType.ckks;
-      break;
-    case 'bgv':
-      schemeType = seal.SchemeType.bgv;
-      break;
-    default:
-      schemeType = seal.SchemeType.bfv;
-      break;
-  }
-  const keyGenerator = seal.KeyGenerator(context);
-  const galoisKeys = keyGenerator.createGaloisKeys();
-  const preparedCipherText1 = seal.CipherText({ context: context });
-  const result = seal.CipherText({ context: context });
-  preparedCipherText1.load(context, cipherText1);
+    let schemeType;
+    switch (scheme) {
+        case 'bfv':
+            schemeType = seal.SchemeType.bfv;
+            break;
+        case 'ckks':
+            schemeType = seal.SchemeType.ckks;
+            break;
+        case 'bgv':
+            schemeType = seal.SchemeType.bgv;
+            break;
+        default:
+            schemeType = seal.SchemeType.bfv;
+            break;
+    }
+    const keyGenerator = seal.KeyGenerator(context);
+    const galoisKeys = keyGenerator.createGaloisKeys();
+    const preparedCipherText1 = seal.CipherText({ context: context });
+    const result = seal.CipherText({ context: context });
+    preparedCipherText1.load(context, cipherText1);
 
-  const evaluator = seal.Evaluator(context);
+    const evaluator = seal.Evaluator(context);
 
-  evaluator.sumElements(preparedCipherText1, galoisKeys, schemeType, result);
-  return result;
+    evaluator.sumElements(preparedCipherText1, galoisKeys, schemeType, result);
+    return result;
 };

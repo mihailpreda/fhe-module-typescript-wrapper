@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.FHEModule = exports.Setup = exports.Cipher = exports.Plain = exports.ProcessingSpeed = exports.Security = exports.Scheme = void 0;
 var Scheme;
 (function (Scheme) {
     Scheme["NONE"] = "none";
@@ -22,6 +23,7 @@ var ProcessingSpeed;
     ProcessingSpeed["VERY_SLOW"] = "verySlow";
 })(ProcessingSpeed = exports.ProcessingSpeed || (exports.ProcessingSpeed = {}));
 class Plain {
+    module;
     constructor(module) {
         this.module = module;
     }
@@ -61,6 +63,7 @@ class Plain {
 }
 exports.Plain = Plain;
 class Cipher {
+    module;
     constructor(module) {
         this.module = module;
     }
@@ -128,8 +131,16 @@ class Cipher {
 }
 exports.Cipher = Cipher;
 class Setup {
+    module;
     constructor(module) {
         this.module = module;
+    }
+    /**
+     * method that will initialize the bindings between EasyFHE, SEAL and node-seal
+     * @returns
+     */
+    initialize() {
+        return this.module.rust_initialize();
     }
     /**
      * Method that sets the homomorphic encryption scheme
@@ -166,6 +177,11 @@ class Setup {
 }
 exports.Setup = Setup;
 class FHEModule {
+    static instance;
+    module;
+    Plain;
+    Cipher;
+    Setup;
     /**
      * Constructor will modify class prototype to be a singleton, because we need the configuration to persist across the application.
      * Constructor will be without any parameters because we want to initialize properties of the class in different phases of the application.
@@ -179,9 +195,6 @@ class FHEModule {
         this.Plain = new Plain(this.module);
         this.Cipher = new Cipher(this.module);
         this.Setup = new Setup(this.module);
-    }
-    initialize() {
-        return this.module.rust_initialize();
     }
     /**
      * Method that generates a pair of (publicKey, secretKey) encryption keys
@@ -245,7 +258,7 @@ exports.FHEModule = FHEModule;
 const getFheModule = function () {
     return new Promise((resolve, reject) => {
         (async () => {
-            const module = await Promise.resolve().then(() => require("./src/pkg/index.js"));
+            const module = await Promise.resolve().then(() => require("./wasm/pkg/index.js"));
             const FheModule = new FHEModule(module);
             resolve(FheModule);
         })();

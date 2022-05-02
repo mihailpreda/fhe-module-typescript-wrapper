@@ -151,6 +151,13 @@ export class Setup {
         this.module = module;
     }
     /**
+     * method that will initialize the bindings between EasyFHE, SEAL and node-seal
+     * @returns
+     */
+    initialize(): Promise<FHEModule> {
+        return this.module.rust_initialize();
+    }
+    /**
      * Method that sets the homomorphic encryption scheme
      * @param {Scheme} scheme
      */
@@ -210,10 +217,6 @@ export class FHEModule {
         this.Plain = new Plain(this.module);
         this.Cipher = new Cipher(this.module);
         this.Setup = new Setup(this.module);
-    }
-
-    initialize(): Promise<FHEModule> {
-        return this.module.rust_initialize();
     }
 
     /**
@@ -283,7 +286,7 @@ export class FHEModule {
 const getFheModule = function (): Promise<FHEModule> {
     return new Promise((resolve, reject) => {
         (async () => {
-            const module = await import("./src/pkg/index.js");
+            const module = await import("./wasm/pkg/index.js");
             const FheModule = new FHEModule(module);
             resolve(FheModule);
         })();
