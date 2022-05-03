@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FHEModule = exports.Setup = exports.Cipher = exports.Plain = exports.ProcessingSpeed = exports.Security = exports.Scheme = void 0;
+exports.FHEModule = exports.Setup = exports.Cipher = exports.Plain = exports.Precision = exports.ProcessingSpeed = exports.Security = exports.Scheme = void 0;
 var Scheme;
 (function (Scheme) {
     Scheme["NONE"] = "none";
@@ -22,6 +22,12 @@ var ProcessingSpeed;
     ProcessingSpeed["SLOW"] = "slow";
     ProcessingSpeed["VERY_SLOW"] = "verySlow";
 })(ProcessingSpeed = exports.ProcessingSpeed || (exports.ProcessingSpeed = {}));
+var Precision;
+(function (Precision) {
+    Precision[Precision["LOW"] = Math.pow(2, 10)] = "LOW";
+    Precision[Precision["NORMAL"] = Math.pow(2, 20)] = "NORMAL";
+    Precision[Precision["HIGH"] = Math.pow(2, 30)] = "HIGH";
+})(Precision = exports.Precision || (exports.Precision = {}));
 class Plain {
     module;
     constructor(module) {
@@ -154,19 +160,21 @@ class Setup {
      * @param {number} poly_modulus_degree
      * @param {Int32Array} bit_sizes
      * @param {number} bit_size
-     * @param {Security} security_level
+     * @param {Security} security
+     * @param { Precision } precision - precision in bits (only used for CKKS scheme)
      */
-    setContext(polyModulusDegree, bitSizes, bitSize, Security) {
-        this.module.rust_setup_context(polyModulusDegree, bitSizes, bitSize, Security);
+    setContext(polyModulusDegree, bitSizes, bitSize, security, precision = Precision.NORMAL) {
+        this.module.rust_setup_context(polyModulusDegree, bitSizes, bitSize, security, precision);
     }
     /**
      * Method that will do the setup of the module in a very simplified way.
      * @param { 'bfv' | 'bgv' | 'ckks' } scheme - homomorphic scheme used
-     * @param { Security } Security - security measured in bits
+     * @param { Security } security - security measured in bits
      * @param { ProcessingSpeed } processingSpeed - refers to the size of polymodulus degree, the greater the degree, the heavier the computational cost will be
+     * @param { Precision } precision - precision in bits (only used for CKKS scheme)
      */
-    fastSetup(scheme, Security, processingSpeed) {
-        this.module.rust_fast_setup(scheme, Security, processingSpeed);
+    fastSetup(scheme, security, processingSpeed, precision = Precision.NORMAL) {
+        this.module.rust_fast_setup(scheme, security, processingSpeed, precision);
     }
     /**
      * Method that deallocates the wasm module reference

@@ -19,6 +19,11 @@ export enum ProcessingSpeed {
     SLOW = "slow",
     VERY_SLOW = "verySlow",
 }
+export enum Precision {
+    LOW = Math.pow(2, 10),
+    NORMAL = Math.pow(2, 20),
+    HIGH = Math.pow(2, 30),
+}
 export class Plain {
     private module: any;
 
@@ -169,25 +174,33 @@ export class Setup {
      * @param {number} poly_modulus_degree
      * @param {Int32Array} bit_sizes
      * @param {number} bit_size
-     * @param {Security} security_level
+     * @param {Security} security
+     * @param { Precision } precision - precision in bits (only used for CKKS scheme)
      */
     setContext(
         polyModulusDegree: number,
         bitSizes: Int32Array,
         bitSize: number,
-        Security: Security
+        security: Security,
+        precision = Precision.NORMAL
     ): void {
-        this.module.rust_setup_context(polyModulusDegree, bitSizes, bitSize, Security);
+        this.module.rust_setup_context(polyModulusDegree, bitSizes, bitSize, security, precision);
     }
 
     /**
      * Method that will do the setup of the module in a very simplified way.
      * @param { 'bfv' | 'bgv' | 'ckks' } scheme - homomorphic scheme used
-     * @param { Security } Security - security measured in bits
+     * @param { Security } security - security measured in bits
      * @param { ProcessingSpeed } processingSpeed - refers to the size of polymodulus degree, the greater the degree, the heavier the computational cost will be
+     * @param { Precision } precision - precision in bits (only used for CKKS scheme)
      */
-    fastSetup(scheme: Scheme, Security: Security, processingSpeed: ProcessingSpeed): void {
-        this.module.rust_fast_setup(scheme, Security, processingSpeed);
+    fastSetup(
+        scheme: Scheme,
+        security: Security,
+        processingSpeed: ProcessingSpeed,
+        precision = Precision.NORMAL
+    ): void {
+        this.module.rust_fast_setup(scheme, security, processingSpeed, precision);
     }
 
     /**

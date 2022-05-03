@@ -3,8 +3,8 @@
 export const memory: WebAssembly.Memory;
 export function rust_initialize(): number;
 export function rust_set_scheme(a: number, b: number): void;
-export function rust_setup_context(a: number, b: number, c: number, d: number, e: number, f: number): void;
-export function rust_fast_setup(a: number, b: number, c: number, d: number, e: number, f: number): void;
+export function rust_setup_context(a: number, b: number, c: number, d: number, e: number, f: number, g: number): void;
+export function rust_fast_setup(a: number, b: number, c: number, d: number, e: number, f: number, g: number): void;
 export function rust_generate_keys(a: number): void;
 export function rust_encrypt(a: number, b: number, c: number): number;
 export function rust_decrypt(a: number, b: number, c: number): number;

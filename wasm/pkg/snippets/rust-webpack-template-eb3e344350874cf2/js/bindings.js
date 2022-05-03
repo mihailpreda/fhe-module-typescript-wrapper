@@ -2,7 +2,7 @@ import SEAL from 'node-seal';
 let seal;
 let parms;
 let context;
-
+let floatingPointPrecision;
 const isCKKS = () => parms.scheme === seal.SchemeType.ckks;
 
 /* SETUP */
@@ -30,7 +30,9 @@ export const js_to_rust_set_encryption_scheme = (scheme) => {
     }
 };
 
-export const js_to_rust_setup_context = (polyModulusDegree, bitSizes, bitSize, securityLevel) => {
+export const js_to_rust_setup_context = (polyModulusDegree, bitSizes, bitSize, securityLevel, precision = Math.pow(2, 20)) => {
+    // used for CKKS scheme
+    floatingPointPrecision = precision;
     switch (securityLevel) {
         case 'tc128':
             securityLevel = seal.SecurityLevel.tc128;
@@ -70,7 +72,9 @@ export const js_to_rust_setup_context = (polyModulusDegree, bitSizes, bitSize, s
     return context;
 };
 
-export const js_to_rust_fast_setup = (scheme = 'bfv', securityLevel = 'tc128', processingSpeed = 'normal') => {
+export const js_to_rust_fast_setup = (scheme = 'bfv', securityLevel = 'tc128', processingSpeed = 'normal', precision = Math.pow(2, 20)) => {
+    // used for CKKS scheme
+    floatingPointPrecision = precision;
     switch (scheme) {
         case 'bfv':
             parms = seal.EncryptionParameters(seal.SchemeType.bfv);
@@ -386,7 +390,7 @@ export const js_to_rust_encrypt = (plainText, publicKey) => {
     const array = isCKKS() ? Float64Array.from(plainText) : Int32Array.from(plainText);
 
     // Encode the Array
-    const encodedPlainText = isCKKS() ? encoder.encode(array, Math.pow(2, 20)) : encoder.encode(array);
+    const encodedPlainText = isCKKS() ? encoder.encode(array, floatingPointPrecision) : encoder.encode(array);
 
     // Encrypt the PlainText
     const cipherText = encryptor.encrypt(encodedPlainText);

@@ -13,14 +13,16 @@ export function rust_set_scheme(scheme: string): void;
 * @param {Int32Array} bit_sizes
 * @param {number} bit_size
 * @param {string} security_level
+* @param {number} precision
 */
-export function rust_setup_context(poly_modulus_degree: number, bit_sizes: Int32Array, bit_size: number, security_level: string): void;
+export function rust_setup_context(poly_modulus_degree: number, bit_sizes: Int32Array, bit_size: number, security_level: string, precision: number): void;
 /**
 * @param {string} scheme
 * @param {string} security_level
 * @param {string} processing_speed
+* @param {number} precision
 */
-export function rust_fast_setup(scheme: string, security_level: string, processing_speed: string): void;
+export function rust_fast_setup(scheme: string, security_level: string, processing_speed: string, precision: number): void;
 /**
 * @returns {any[]}
 */

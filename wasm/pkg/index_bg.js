@@ -255,28 +255,30 @@ function passArray32ToWasm0(arg, malloc) {
 * @param {Int32Array} bit_sizes
 * @param {number} bit_size
 * @param {string} security_level
+* @param {number} precision
 */
-export function rust_setup_context(poly_modulus_degree, bit_sizes, bit_size, security_level) {
+export function rust_setup_context(poly_modulus_degree, bit_sizes, bit_size, security_level, precision) {
     var ptr0 = passArray32ToWasm0(bit_sizes, wasm.__wbindgen_malloc);
     var len0 = WASM_VECTOR_LEN;
     var ptr1 = passStringToWasm0(security_level, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len1 = WASM_VECTOR_LEN;
-    wasm.rust_setup_context(poly_modulus_degree, ptr0, len0, bit_size, ptr1, len1);
+    wasm.rust_setup_context(poly_modulus_degree, ptr0, len0, bit_size, ptr1, len1, precision);
 }
 
 /**
 * @param {string} scheme
 * @param {string} security_level
 * @param {string} processing_speed
+* @param {number} precision
 */
-export function rust_fast_setup(scheme, security_level, processing_speed) {
+export function rust_fast_setup(scheme, security_level, processing_speed, precision) {
     var ptr0 = passStringToWasm0(scheme, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len0 = WASM_VECTOR_LEN;
     var ptr1 = passStringToWasm0(security_level, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len1 = WASM_VECTOR_LEN;
     var ptr2 = passStringToWasm0(processing_speed, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len2 = WASM_VECTOR_LEN;
-    wasm.rust_fast_setup(ptr0, len0, ptr1, len1, ptr2, len2);
+    wasm.rust_fast_setup(ptr0, len0, ptr1, len1, ptr2, len2, precision);
 }
 
 function getArrayJsValueFromWasm0(ptr, len) {
@@ -514,20 +516,20 @@ export function __wbindgen_object_drop_ref(arg0) {
     takeObject(arg0);
 };
 
-export function __wbg_jstorustsetupcontext_2de46b49c0881787(arg0, arg1, arg2, arg3, arg4, arg5) {
+export function __wbg_jstorustsetupcontext_2de46b49c0881787(arg0, arg1, arg2, arg3, arg4, arg5, arg6) {
     try {
         var v0 = getArrayI32FromWasm0(arg1, arg2).slice();
         wasm.__wbindgen_free(arg1, arg2 * 4);
-        var ret = js_to_rust_setup_context(arg0, v0, arg3, getStringFromWasm0(arg4, arg5));
+        var ret = js_to_rust_setup_context(arg0, v0, arg3, getStringFromWasm0(arg4, arg5), arg6);
         return addHeapObject(ret);
     } finally {
         wasm.__wbindgen_free(arg4, arg5);
     }
 };
 
-export function __wbg_jstorustfastsetup_e7ebbbde93cc7789(arg0, arg1, arg2, arg3, arg4, arg5, arg6) {
+export function __wbg_jstorustfastsetup_e7ebbbde93cc7789(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7) {
     try {
-        var ret = js_to_rust_fast_setup(getStringFromWasm0(arg1, arg2), getStringFromWasm0(arg3, arg4), getStringFromWasm0(arg5, arg6));
+        var ret = js_to_rust_fast_setup(getStringFromWasm0(arg1, arg2), getStringFromWasm0(arg3, arg4), getStringFromWasm0(arg5, arg6), arg7);
         var ptr0 = passArrayJsValueToWasm0(ret, wasm.__wbindgen_malloc);
         var len0 = WASM_VECTOR_LEN;
         getInt32Memory0()[arg0 / 4 + 1] = len0;
