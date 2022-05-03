@@ -134,9 +134,9 @@ export class Cipher {
         return this.module.rust_negate_cipher(cipherText);
     }
 
-    sumElements(cipherText: string, scheme: Scheme): CipherText {
-        return this.module.rust_sum_elements(cipherText, scheme);
-    }
+    // sumElements(cipherText: string, scheme: Scheme): CipherText {
+    //     return this.module.rust_sum_elements(cipherText, scheme);
+    // }
     /**
      * Method that deallocates the wasm module reference
      */

@@ -661,30 +661,30 @@ export const js_to_rust_deallocate_module = () => {
 /********************************************************************************************************* */
 /* Experimental */
 /********************************************************************************************************* */
-export const js_to_rust_sum_elements = (cipherText1, scheme) => {
-    let schemeType;
-    switch (scheme) {
-        case 'bfv':
-            schemeType = seal.SchemeType.bfv;
-            break;
-        case 'ckks':
-            schemeType = seal.SchemeType.ckks;
-            break;
-        case 'bgv':
-            schemeType = seal.SchemeType.bgv;
-            break;
-        default:
-            schemeType = seal.SchemeType.bfv;
-            break;
-    }
-    const keyGenerator = seal.KeyGenerator(context);
-    const galoisKeys = keyGenerator.createGaloisKeys();
-    const preparedCipherText1 = seal.CipherText({ context: context });
-    const result = seal.CipherText({ context: context });
-    preparedCipherText1.load(context, cipherText1);
+// export const js_to_rust_sum_elements = (cipherText1, scheme) => {
+//     let schemeType;
+//     switch (scheme) {
+//         case 'bfv':
+//             schemeType = seal.SchemeType.bfv;
+//             break;
+//         case 'ckks':
+//             schemeType = seal.SchemeType.ckks;
+//             break;
+//         case 'bgv':
+//             schemeType = seal.SchemeType.bgv;
+//             break;
+//         default:
+//             schemeType = seal.SchemeType.bfv;
+//             break;
+//     }
+//     const keyGenerator = seal.KeyGenerator(context);
+//     const galoisKeys = keyGenerator.createGaloisKeys();
+//     const preparedCipherText1 = seal.CipherText({ context: context });
+//     const result = seal.CipherText({ context: context });
+//     preparedCipherText1.load(context, cipherText1);
 
-    const evaluator = seal.Evaluator(context);
+//     const evaluator = seal.Evaluator(context);
 
-    evaluator.sumElements(preparedCipherText1, galoisKeys, schemeType, result);
-    return result;
-};
+//     evaluator.sumElements(preparedCipherText1, galoisKeys, schemeType, result);
+//     return result;
+// };

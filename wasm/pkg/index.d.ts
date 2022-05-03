@@ -101,9 +101,3 @@ export function rust_deallocate_seal_library(): void;
 /**
 */
 export function rust_deallocate_module(): void;
-/**
-* @param {string} cipher_text1
-* @param {string} scheme
-* @returns {any}
-*/
-export function rust_sum_elements(cipher_text1: string, scheme: string): any;

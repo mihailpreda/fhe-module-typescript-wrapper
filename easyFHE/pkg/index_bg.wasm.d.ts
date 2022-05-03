@@ -21,7 +21,6 @@ export function rust_deallocate_context(): void;
 export function rust_deallocate_parameters(): void;
 export function rust_deallocate_seal_library(): void;
 export function rust_deallocate_module(): void;
-export function rust_sum_elements(a: number, b: number, c: number, d: number): number;
 export function __wbindgen_malloc(a: number): number;
 export function __wbindgen_realloc(a: number, b: number, c: number): number;
 export const __wbindgen_export_2: WebAssembly.Table;

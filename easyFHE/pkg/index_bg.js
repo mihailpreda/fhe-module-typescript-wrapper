@@ -1,4 +1,4 @@
-import { js_to_rust_initialize, js_to_rust_set_encryption_scheme, js_to_rust_setup_context, js_to_rust_fast_setup, js_to_rust_generate_keys, js_to_rust_encrypt, js_to_rust_decrypt, js_to_rust_add_ciphers, js_to_rust_sub_ciphers, js_to_rust_multiply_ciphers, js_to_rust_square_cipher, js_to_rust_exponentiate_cipher, js_to_rust_negate_cipher, js_to_rust_add_plain, js_to_rust_sub_plain, js_to_rust_multiply_plain, js_to_rust_sum_elements } from './snippets/rust-webpack-template-eb3e344350874cf2/js/bindings.js';
+import { js_to_rust_initialize, js_to_rust_set_encryption_scheme, js_to_rust_setup_context, js_to_rust_fast_setup, js_to_rust_generate_keys, js_to_rust_encrypt, js_to_rust_decrypt, js_to_rust_add_ciphers, js_to_rust_sub_ciphers, js_to_rust_multiply_ciphers, js_to_rust_square_cipher, js_to_rust_exponentiate_cipher, js_to_rust_negate_cipher, js_to_rust_add_plain, js_to_rust_sub_plain, js_to_rust_multiply_plain } from './snippets/rust-webpack-template-eb3e344350874cf2/js/bindings.js';
 import * as wasm from './index_bg.wasm';
 
 const heap = new Array(32).fill(undefined);
@@ -471,20 +471,6 @@ export function rust_deallocate_module() {
     wasm.rust_deallocate_module();
 }
 
-/**
-* @param {string} cipher_text1
-* @param {string} scheme
-* @returns {any}
-*/
-export function rust_sum_elements(cipher_text1, scheme) {
-    var ptr0 = passStringToWasm0(cipher_text1, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    var len0 = WASM_VECTOR_LEN;
-    var ptr1 = passStringToWasm0(scheme, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    var len1 = WASM_VECTOR_LEN;
-    var ret = wasm.rust_sum_elements(ptr0, len0, ptr1, len1);
-    return takeObject(ret);
-}
-
 function handleError(f, args) {
     try {
         return f.apply(this, args);
@@ -492,7 +478,7 @@ function handleError(f, args) {
         wasm.__wbindgen_exn_store(addHeapObject(e));
     }
 }
-function __wbg_adapter_76(arg0, arg1, arg2, arg3) {
+function __wbg_adapter_73(arg0, arg1, arg2, arg3) {
     wasm.wasm_bindgen__convert__closures__invoke2_mut__hb6b1ce70fe4e6087(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
 }
 
@@ -503,7 +489,7 @@ export function __wbg_new_4beacc9c71572250(arg0, arg1) {
             const a = state0.a;
             state0.a = 0;
             try {
-                return __wbg_adapter_76(a, state0.b, arg0, arg1);
+                return __wbg_adapter_73(a, state0.b, arg0, arg1);
             } finally {
                 state0.a = a;
             }
@@ -667,16 +653,6 @@ export function __wbg_jstorustmultiplyplain_a6956c68ceb99dc0(arg0, arg1, arg2, a
     }
 };
 
-export function __wbg_jstorustsumelements_9a9edc6e5fc06044(arg0, arg1, arg2, arg3) {
-    try {
-        var ret = js_to_rust_sum_elements(getStringFromWasm0(arg0, arg1), getStringFromWasm0(arg2, arg3));
-        return addHeapObject(ret);
-    } finally {
-        wasm.__wbindgen_free(arg0, arg1);
-        wasm.__wbindgen_free(arg2, arg3);
-    }
-};
-
 export function __wbg_jstorustinitialize_90a373980a3201c9() {
     var ret = js_to_rust_initialize();
     return addHeapObject(ret);
@@ -724,7 +700,7 @@ export function __wbg_resolve_4f8f547f26b30b27(arg0) {
     return addHeapObject(ret);
 };
 
-export function __wbindgen_closure_wrapper574(arg0, arg1, arg2) {
+export function __wbindgen_closure_wrapper572(arg0, arg1, arg2) {
     var ret = makeMutClosure(arg0, arg1, 20, __wbg_adapter_10);
     return addHeapObject(ret);
 };

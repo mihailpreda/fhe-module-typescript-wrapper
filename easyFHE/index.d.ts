@@ -91,7 +91,6 @@ export declare class Cipher {
      * @returns {CipherText}
      */
     negate(cipherText: string): CipherText;
-    sumElements(cipherText: string, scheme: Scheme): CipherText;
     /**
      * Method that deallocates the wasm module reference
      */
