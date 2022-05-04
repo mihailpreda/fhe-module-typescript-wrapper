@@ -577,7 +577,13 @@ export const js_to_rust_add_plain = (cipherText, plainText) => {
         context: context,
     });
     const encoder = isCKKS() ? seal.CKKSEncoder(context) : seal.BatchEncoder(context);
-    const preparedPlainText = encoder.encode(plainText);
+
+    // Create data to be encrypted
+    const array = isCKKS() ? Float64Array.from(plainText) : Int32Array.from(plainText);
+
+    // Encode the Array
+    const preparedPlainText = isCKKS() ? encoder.encode(array, floatingPointPrecision) : encoder.encode(array);
+
     const result = seal.CipherText({
         context: context,
     });
@@ -601,7 +607,13 @@ export const js_to_rust_sub_plain = (cipherText, plainText) => {
         context: context,
     });
     const encoder = isCKKS() ? seal.CKKSEncoder(context) : seal.BatchEncoder(context);
-    const preparedPlainText = encoder.encode(plainText);
+
+    // Create data to be encrypted
+    const array = isCKKS() ? Float64Array.from(plainText) : Int32Array.from(plainText);
+
+    // Encode the Array
+    const preparedPlainText = isCKKS() ? encoder.encode(array, floatingPointPrecision) : encoder.encode(array);
+
     const result = seal.CipherText({
         context: context,
     });
@@ -625,7 +637,12 @@ export const js_to_rust_multiply_plain = (cipherText, plainText) => {
         context: context,
     });
     const encoder = isCKKS() ? seal.CKKSEncoder(context) : seal.BatchEncoder(context);
-    const preparedPlainText = encoder.encode(plainText);
+    // Create data to be encrypted
+    const array = isCKKS() ? Float64Array.from(plainText) : Int32Array.from(plainText);
+
+    // Encode the Array
+    const preparedPlainText = isCKKS() ? encoder.encode(array, floatingPointPrecision) : encoder.encode(array);
+
     const result = seal.CipherText({
         context: context,
     });
