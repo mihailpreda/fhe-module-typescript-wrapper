@@ -1,33 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FHEModule = exports.Setup = exports.Cipher = exports.Plain = exports.Precision = exports.ProcessingSpeed = exports.Security = exports.Scheme = void 0;
-var Scheme;
-(function (Scheme) {
-    Scheme["NONE"] = "none";
-    Scheme["BFV"] = "bfv";
-    Scheme["BGV"] = "bgv";
-    Scheme["CKKS"] = "ckks";
-})(Scheme = exports.Scheme || (exports.Scheme = {}));
-var Security;
-(function (Security) {
-    Security["TC128"] = "tc128";
-    Security["TC192"] = "tc192";
-    Security["TC256"] = "tc256";
-})(Security = exports.Security || (exports.Security = {}));
-var ProcessingSpeed;
-(function (ProcessingSpeed) {
-    ProcessingSpeed["VERY_FAST"] = "veryFast";
-    ProcessingSpeed["FAST"] = "fast";
-    ProcessingSpeed["NORMAL"] = "normal";
-    ProcessingSpeed["SLOW"] = "slow";
-    ProcessingSpeed["VERY_SLOW"] = "verySlow";
-})(ProcessingSpeed = exports.ProcessingSpeed || (exports.ProcessingSpeed = {}));
-var Precision;
-(function (Precision) {
-    Precision[Precision["LOW"] = Math.pow(2, 10)] = "LOW";
-    Precision[Precision["NORMAL"] = Math.pow(2, 20)] = "NORMAL";
-    Precision[Precision["HIGH"] = Math.pow(2, 30)] = "HIGH";
-})(Precision = exports.Precision || (exports.Precision = {}));
+exports.FHEModule = exports.Setup = exports.Cipher = exports.Plain = exports.EasyPrecision = exports.EasySpeed = exports.EasySecurity = exports.EasyScheme = void 0;
+const types_1 = require("./types");
+var types_2 = require("./types");
+Object.defineProperty(exports, "EasyScheme", { enumerable: true, get: function () { return types_2.EasyScheme; } });
+Object.defineProperty(exports, "EasySecurity", { enumerable: true, get: function () { return types_2.EasySecurity; } });
+Object.defineProperty(exports, "EasySpeed", { enumerable: true, get: function () { return types_2.EasySpeed; } });
+Object.defineProperty(exports, "EasyPrecision", { enumerable: true, get: function () { return types_2.EasyPrecision; } });
 class Plain {
     module;
     constructor(module) {
@@ -35,9 +14,9 @@ class Plain {
     }
     /**
      * Method that adds plain data to encrypted data
-     * @param {CipherText} cipherText
+     * @param {EasyCipherText} cipherText
      * @param {Int32Array | Float64Array} plainText
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
     add(cipherText, plainText) {
         return this.module.rust_add_plain(cipherText, plainText);
@@ -46,7 +25,7 @@ class Plain {
      * Method that subtracts plain data to encrypted data
      * @param {string} cipherText
      * @param {Int32Array | Float64Array} plainText
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
     sub(cipherText, plainText) {
         return this.module.rust_sub_plain(cipherText, plainText);
@@ -55,7 +34,7 @@ class Plain {
      * Method that multiply encrypted data with plain data
      * @param {string} cipherText
      * @param {Int32Array | Float64Array} plainText
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
     multiply(cipherText, plainText) {
         return this.module.rust_multiply_plain(cipherText, plainText);
@@ -75,9 +54,9 @@ class Cipher {
     }
     /**
      * Method that adds two ciphertexts
-     * @param {CipherText} cipherText1
-     * @param {CipherText} cipherText2
-     * @returns {CipherText}
+     * @param {EasyCipherText} cipherText1
+     * @param {EasyCipherText} cipherText2
+     * @returns {EasyCipherText}
      */
     add(cipherText1, cipherText2) {
         return this.module.rust_add_ciphers(cipherText1, cipherText2);
@@ -86,7 +65,7 @@ class Cipher {
      * Method that subtracts two ciphertexts
      * @param {string} cipherText1
      * @param {string} cipherText2
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
     sub(cipherText1, cipherText2) {
         return this.module.rust_sub_ciphers(cipherText1, cipherText2);
@@ -95,7 +74,7 @@ class Cipher {
      * Method that multiplies two ciphertexts
      * @param {string} cipherText1
      * @param {string} cipherText2
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
     multiply(cipherText1, cipherText2) {
         return this.module.rust_multiply_ciphers(cipherText1, cipherText2);
@@ -103,7 +82,7 @@ class Cipher {
     /**
      * Method that squares a ciphertext
      * @param {string} cipherText
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
     square(cipherText) {
         return this.module.rust_square_cipher(cipherText);
@@ -112,7 +91,7 @@ class Cipher {
      * Method that exponentatiates a ciphertext to a certain power
      * @param {string} cipherText
      * @param {number} power
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
     exponentiate(cipherText, power) {
         return this.module.rust_exponentiate_cipher(cipherText, power);
@@ -120,12 +99,12 @@ class Cipher {
     /**
      * Method that inverts all the values of a ciphertext
      * @param {string} cipherText
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
     negate(cipherText) {
         return this.module.rust_negate_cipher(cipherText);
     }
-    // sumElements(cipherText: string, scheme: Scheme): CipherText {
+    // sumElements(cipherText: string, scheme: EasyScheme): EasyCipherText {
     //     return this.module.rust_sum_elements(cipherText, scheme);
     // }
     /**
@@ -150,7 +129,7 @@ class Setup {
     }
     /**
      * Method that sets the homomorphic encryption scheme
-     * @param {Scheme} scheme
+     * @param {EasyScheme} scheme
      */
     setScheme(scheme) {
         this.module.rust_set_scheme(scheme);
@@ -160,20 +139,20 @@ class Setup {
      * @param {number} poly_modulus_degree
      * @param {Int32Array} bit_sizes
      * @param {number} bit_size
-     * @param {Security} security
-     * @param { Precision } precision - precision in bits (only used for CKKS scheme)
+     * @param {EasySecurity} security
+     * @param { EasyPrecision } precision - precision in bits (only used for CKKS scheme)
      */
-    setContext(polyModulusDegree, bitSizes, bitSize, security, precision = Precision.NORMAL) {
+    setContext(polyModulusDegree, bitSizes, bitSize, security, precision = types_1.EasyPrecision.NORMAL) {
         this.module.rust_setup_context(polyModulusDegree, bitSizes, bitSize, security, precision);
     }
     /**
      * Method that will do the setup of the module in a very simplified way.
      * @param { 'bfv' | 'bgv' | 'ckks' } scheme - homomorphic scheme used
-     * @param { Security } security - security measured in bits
-     * @param { ProcessingSpeed } processingSpeed - refers to the size of polymodulus degree, the greater the degree, the heavier the computational cost will be
-     * @param { Precision } precision - precision in bits (only used for CKKS scheme)
+     * @param { EasySecurity } security - security measured in bits
+     * @param { EasySpeed } processingSpeed - refers to the size of polymodulus degree, the greater the degree, the heavier the computational cost will be
+     * @param { EasyPrecision } precision - precision in bits (only used for CKKS scheme)
      */
-    fastSetup(scheme, security, processingSpeed, precision = Precision.NORMAL) {
+    fastSetup(scheme, security, processingSpeed, precision = types_1.EasyPrecision.NORMAL) {
         this.module.rust_fast_setup(scheme, security, processingSpeed, precision);
     }
     /**
@@ -207,7 +186,7 @@ class FHEModule {
     /**
      * Method that generates a pair of (publicKey, secretKey) encryption keys
      *
-     * @returns {[PublicKey, SecretKey]}
+     * @returns {[EasyPublicKey, EasySecretKey]}
      */
     generateKeys() {
         return this.module.rust_generate_keys();
@@ -215,7 +194,7 @@ class FHEModule {
     /**
      * @param {Int32Array | Float64Array} array
      * @param {Object} publicKey
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
     encrypt(array, publicKey) {
         return this.module.rust_encrypt(array, publicKey);

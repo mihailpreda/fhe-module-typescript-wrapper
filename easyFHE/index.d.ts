@@ -1,53 +1,35 @@
-import { CipherText } from "node-seal/implementation/cipher-text";
-import { PublicKey } from "node-seal/implementation/public-key";
-import { SecretKey } from "node-seal/implementation/secret-key";
-export declare enum Scheme {
-    NONE = "none",
-    BFV = "bfv",
-    BGV = "bgv",
-    CKKS = "ckks"
-}
-export declare enum Security {
-    TC128 = "tc128",
-    TC192 = "tc192",
-    TC256 = "tc256"
-}
-export declare enum ProcessingSpeed {
-    VERY_FAST = "veryFast",
-    FAST = "fast",
-    NORMAL = "normal",
-    SLOW = "slow",
-    VERY_SLOW = "verySlow"
-}
-export declare enum Precision {
-    LOW,
-    NORMAL,
-    HIGH
-}
+import * as CipherText from "node-seal/implementation/cipher-text";
+import * as PublicKey from "node-seal/implementation/public-key";
+import * as SecretKey from "node-seal/implementation/secret-key";
+import { EasyScheme, EasySecurity, EasySpeed, EasyPrecision } from "./types";
+export { EasyScheme, EasySecurity, EasySpeed, EasyPrecision } from "./types";
+export declare type EasyCipherText = CipherText.CipherText;
+export declare type EasyPublicKey = PublicKey.PublicKey;
+export declare type EasySecretKey = SecretKey.SecretKey;
 export declare class Plain {
     private module;
     constructor(module: any);
     /**
      * Method that adds plain data to encrypted data
-     * @param {CipherText} cipherText
+     * @param {EasyCipherText} cipherText
      * @param {Int32Array | Float64Array} plainText
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
-    add(cipherText: string, plainText: Int32Array | Float64Array): CipherText;
+    add(cipherText: string, plainText: Int32Array | Float64Array): EasyCipherText;
     /**
      * Method that subtracts plain data to encrypted data
      * @param {string} cipherText
      * @param {Int32Array | Float64Array} plainText
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
-    sub(cipherText: string, plainText: Int32Array | Float64Array): CipherText;
+    sub(cipherText: string, plainText: Int32Array | Float64Array): EasyCipherText;
     /**
      * Method that multiply encrypted data with plain data
      * @param {string} cipherText
      * @param {Int32Array | Float64Array} plainText
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
-    multiply(cipherText: string, plainText: Int32Array | Float64Array): CipherText;
+    multiply(cipherText: string, plainText: Int32Array | Float64Array): EasyCipherText;
     /**
      * Method that deallocates the wasm module reference
      */
@@ -58,44 +40,44 @@ export declare class Cipher {
     constructor(module: any);
     /**
      * Method that adds two ciphertexts
-     * @param {CipherText} cipherText1
-     * @param {CipherText} cipherText2
-     * @returns {CipherText}
+     * @param {EasyCipherText} cipherText1
+     * @param {EasyCipherText} cipherText2
+     * @returns {EasyCipherText}
      */
-    add(cipherText1: string, cipherText2: string): CipherText;
+    add(cipherText1: string, cipherText2: string): EasyCipherText;
     /**
      * Method that subtracts two ciphertexts
      * @param {string} cipherText1
      * @param {string} cipherText2
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
-    sub(cipherText1: string, cipherText2: string): CipherText;
+    sub(cipherText1: string, cipherText2: string): EasyCipherText;
     /**
      * Method that multiplies two ciphertexts
      * @param {string} cipherText1
      * @param {string} cipherText2
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
-    multiply(cipherText1: string, cipherText2: string): CipherText;
+    multiply(cipherText1: string, cipherText2: string): EasyCipherText;
     /**
      * Method that squares a ciphertext
      * @param {string} cipherText
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
-    square(cipherText: string): CipherText;
+    square(cipherText: string): EasyCipherText;
     /**
      * Method that exponentatiates a ciphertext to a certain power
      * @param {string} cipherText
      * @param {number} power
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
-    exponentiate(cipherText: string, power: number): CipherText;
+    exponentiate(cipherText: string, power: number): EasyCipherText;
     /**
      * Method that inverts all the values of a ciphertext
      * @param {string} cipherText
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
-    negate(cipherText: string): CipherText;
+    negate(cipherText: string): EasyCipherText;
     /**
      * Method that deallocates the wasm module reference
      */
@@ -111,26 +93,26 @@ export declare class Setup {
     initialize(): Promise<FHEModule>;
     /**
      * Method that sets the homomorphic encryption scheme
-     * @param {Scheme} scheme
+     * @param {EasyScheme} scheme
      */
-    setScheme(scheme: Scheme): void;
+    setScheme(scheme: EasyScheme): void;
     /**
      * Method that sets the  security Context of the module
      * @param {number} poly_modulus_degree
      * @param {Int32Array} bit_sizes
      * @param {number} bit_size
-     * @param {Security} security
-     * @param { Precision } precision - precision in bits (only used for CKKS scheme)
+     * @param {EasySecurity} security
+     * @param { EasyPrecision } precision - precision in bits (only used for CKKS scheme)
      */
-    setContext(polyModulusDegree: number, bitSizes: Int32Array, bitSize: number, security: Security, precision?: Precision): void;
+    setContext(polyModulusDegree: number, bitSizes: Int32Array, bitSize: number, security: EasySecurity, precision?: EasyPrecision): void;
     /**
      * Method that will do the setup of the module in a very simplified way.
      * @param { 'bfv' | 'bgv' | 'ckks' } scheme - homomorphic scheme used
-     * @param { Security } security - security measured in bits
-     * @param { ProcessingSpeed } processingSpeed - refers to the size of polymodulus degree, the greater the degree, the heavier the computational cost will be
-     * @param { Precision } precision - precision in bits (only used for CKKS scheme)
+     * @param { EasySecurity } security - security measured in bits
+     * @param { EasySpeed } processingSpeed - refers to the size of polymodulus degree, the greater the degree, the heavier the computational cost will be
+     * @param { EasyPrecision } precision - precision in bits (only used for CKKS scheme)
      */
-    fastSetup(scheme: Scheme, security: Security, processingSpeed: ProcessingSpeed, precision?: Precision): void;
+    fastSetup(scheme: EasyScheme, security: EasySecurity, processingSpeed: EasySpeed, precision?: EasyPrecision): void;
     /**
      * Method that deallocates the wasm module reference
      */
@@ -151,21 +133,21 @@ export declare class FHEModule {
     /**
      * Method that generates a pair of (publicKey, secretKey) encryption keys
      *
-     * @returns {[PublicKey, SecretKey]}
+     * @returns {[EasyPublicKey, EasySecretKey]}
      */
-    generateKeys(): [PublicKey, SecretKey];
+    generateKeys(): [EasyPublicKey, EasySecretKey];
     /**
      * @param {Int32Array | Float64Array} array
      * @param {Object} publicKey
-     * @returns {CipherText}
+     * @returns {EasyCipherText}
      */
-    encrypt(array: Int32Array | Float64Array | Uint32Array, publicKey: PublicKey): CipherText;
+    encrypt(array: Int32Array | Float64Array | Uint32Array, publicKey: EasyPublicKey): EasyCipherText;
     /**
      * @param {Int32Array | Float64Array} array
      * @param {Object} secretKey
      * @returns {Uint8Array}
      */
-    decrypt(array: string, secretKey: SecretKey): Uint8Array;
+    decrypt(array: string, secretKey: EasySecretKey): Uint8Array;
     /**
      * Deallocates the context
      */
