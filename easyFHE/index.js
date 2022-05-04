@@ -222,18 +222,17 @@ class FHEModule {
     /**
      * Deallocates the SEAL library
      */
-    deallocateSealLibrary() {
-        this.module.rust_deallocate_seal_library();
+    deallocateSEAL() {
+        this.module.rust_deallocate_seal();
     }
     /**
      * Deallocates the FHE module
      */
-    deallocateModule() {
-        this.module.rust_deallocate_module();
-        this.module = null;
+    deallocateLibrary() {
         this.Cipher.delete();
         this.Plain.delete();
         this.Setup.delete();
+        this.module.rust_deallocate_library();
     }
 }
 exports.FHEModule = FHEModule;

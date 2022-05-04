@@ -261,18 +261,17 @@ export class FHEModule {
     /**
      * Deallocates the SEAL library
      */
-    deallocateSealLibrary(): void {
-        this.module.rust_deallocate_seal_library();
+    deallocateSEAL(): void {
+        this.module.rust_deallocate_seal();
     }
     /**
      * Deallocates the FHE module
      */
-    deallocateModule(): void {
-        this.module.rust_deallocate_module();
-        this.module = null;
+    deallocateLibrary(): void {
         this.Cipher.delete();
         this.Plain.delete();
         this.Setup.delete();
+        this.module.rust_deallocate_library();
     }
 }
 

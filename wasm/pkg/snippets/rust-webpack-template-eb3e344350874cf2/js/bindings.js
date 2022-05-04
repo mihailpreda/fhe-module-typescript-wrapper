@@ -670,14 +670,14 @@ export const js_to_rust_deallocate_parameters = () => {
     parms.delete();
 };
 
-export const js_to_rust_deallocate_seal_library = () => {
-    seal.delete();
+export const js_to_rust_deallocate_seal = () => {
+    seal = null;
 };
 
-export const js_to_rust_deallocate_module = () => {
+export const js_to_rust_deallocate_library = () => {
     js_to_rust_deallocate_context();
     js_to_rust_deallocate_parameters();
-    seal = null;
+    js_to_rust_deallocate_seal();
 };
 /********************************************************************************************************* */
 /* Experimental */

@@ -99,7 +99,7 @@ export function rust_deallocate_context(): void;
 export function rust_deallocate_parameters(): void;
 /**
 */
-export function rust_deallocate_seal_library(): void;
+export function rust_deallocate_seal(): void;
 /**
 */
-export function rust_deallocate_module(): void;
+export function rust_deallocate_library(): void;

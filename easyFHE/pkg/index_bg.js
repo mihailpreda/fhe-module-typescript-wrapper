@@ -463,14 +463,14 @@ export function rust_deallocate_parameters() {
 
 /**
 */
-export function rust_deallocate_seal_library() {
-    wasm.rust_deallocate_seal_library();
+export function rust_deallocate_seal() {
+    wasm.rust_deallocate_seal();
 }
 
 /**
 */
-export function rust_deallocate_module() {
-    wasm.rust_deallocate_module();
+export function rust_deallocate_library() {
+    wasm.rust_deallocate_library();
 }
 
 function handleError(f, args) {

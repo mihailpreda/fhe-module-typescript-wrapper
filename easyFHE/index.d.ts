@@ -159,11 +159,11 @@ export declare class FHEModule {
     /**
      * Deallocates the SEAL library
      */
-    deallocateSealLibrary(): void;
+    deallocateSEAL(): void;
     /**
      * Deallocates the FHE module
      */
-    deallocateModule(): void;
+    deallocateLibrary(): void;
 }
 /**
  * Method that initialize a singleton instance of FHEModule
