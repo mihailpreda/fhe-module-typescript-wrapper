@@ -121,7 +121,7 @@ class Setup {
         this.module = module;
     }
     /**
-     * method that will initialize the bindings between EasyFHE, SEAL and node-seal
+     * Method that will initialize the bindings between EasyFHE, SEAL and node-seal
      * @returns
      */
     initialize() {
@@ -237,7 +237,7 @@ class FHEModule {
 }
 exports.FHEModule = FHEModule;
 /**
- * Method that initialize a singleton instance of FHEModule
+ * Method that will fetch a singleton instance of the WebAssembly module
  *
  * @returns Promise<FHEModule>
  */
