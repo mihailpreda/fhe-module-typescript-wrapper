@@ -1,4 +1,6 @@
 import * as CipherText from "node-seal/implementation/cipher-text";
+import { Context } from "node-seal/implementation/context";
+import { EncryptionParameters } from "node-seal/implementation/encryption-parameters";
 import * as PublicKey from "node-seal/implementation/public-key";
 import * as SecretKey from "node-seal/implementation/secret-key";
 import { EasyScheme, EasySecurity, EasySpeed, EasyPrecision } from "./types";
@@ -6,6 +8,8 @@ export { EasyScheme, EasySecurity, EasySpeed, EasyPrecision } from "./types";
 export type EasyCipherText = CipherText.CipherText;
 export type EasyPublicKey = PublicKey.PublicKey;
 export type EasySecretKey = SecretKey.SecretKey;
+export type EasyContext = Context;
+export type EasyEncryptionParameters = EncryptionParameters;
 export class Plain {
     private module: any;
 
@@ -228,10 +232,7 @@ export class FHEModule {
      * @returns {EasyCipherText}
      */
 
-    encrypt(
-        array: Int32Array | Float64Array | Uint32Array,
-        publicKey: EasyPublicKey
-    ): EasyCipherText {
+    encrypt(array: Int32Array | Float64Array | Uint32Array, publicKey: EasyPublicKey): EasyCipherText {
         return this.module.rust_encrypt(array, publicKey);
     }
 

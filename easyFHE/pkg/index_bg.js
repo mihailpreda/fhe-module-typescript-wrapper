@@ -520,24 +520,19 @@ export function __wbg_jstorustsetupcontext_2de46b49c0881787(arg0, arg1, arg2, ar
     try {
         var v0 = getArrayI32FromWasm0(arg1, arg2).slice();
         wasm.__wbindgen_free(arg1, arg2 * 4);
-        var ret = js_to_rust_setup_context(arg0, v0, arg3, getStringFromWasm0(arg4, arg5), arg6);
-        return addHeapObject(ret);
+        js_to_rust_setup_context(arg0, v0, arg3, getStringFromWasm0(arg4, arg5), arg6);
     } finally {
         wasm.__wbindgen_free(arg4, arg5);
     }
 };
 
-export function __wbg_jstorustfastsetup_e7ebbbde93cc7789(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7) {
+export function __wbg_jstorustfastsetup_e7ebbbde93cc7789(arg0, arg1, arg2, arg3, arg4, arg5, arg6) {
     try {
-        var ret = js_to_rust_fast_setup(getStringFromWasm0(arg1, arg2), getStringFromWasm0(arg3, arg4), getStringFromWasm0(arg5, arg6), arg7);
-        var ptr0 = passArrayJsValueToWasm0(ret, wasm.__wbindgen_malloc);
-        var len0 = WASM_VECTOR_LEN;
-        getInt32Memory0()[arg0 / 4 + 1] = len0;
-        getInt32Memory0()[arg0 / 4 + 0] = ptr0;
+        js_to_rust_fast_setup(getStringFromWasm0(arg0, arg1), getStringFromWasm0(arg2, arg3), getStringFromWasm0(arg4, arg5), arg6);
     } finally {
-        wasm.__wbindgen_free(arg1, arg2);
-        wasm.__wbindgen_free(arg3, arg4);
-        wasm.__wbindgen_free(arg5, arg6);
+        wasm.__wbindgen_free(arg0, arg1);
+        wasm.__wbindgen_free(arg2, arg3);
+        wasm.__wbindgen_free(arg4, arg5);
     }
 };
 
@@ -702,7 +697,7 @@ export function __wbg_resolve_4f8f547f26b30b27(arg0) {
     return addHeapObject(ret);
 };
 
-export function __wbindgen_closure_wrapper572(arg0, arg1, arg2) {
+export function __wbindgen_closure_wrapper570(arg0, arg1, arg2) {
     var ret = makeMutClosure(arg0, arg1, 20, __wbg_adapter_10);
     return addHeapObject(ret);
 };
