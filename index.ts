@@ -10,10 +10,12 @@ export type EasyPublicKey = PublicKey.PublicKey;
 export type EasySecretKey = SecretKey.SecretKey;
 export type EasyContext = Context;
 export type EasyEncryptionParameters = EncryptionParameters;
+export type Nullable<T> = T | null;
+type SealBindings = any;
 export class Plain {
-    private module: any;
+    private module: SealBindings;
 
-    constructor(module: any) {
+    constructor(module: SealBindings) {
         this.module = module;
     }
     /**
@@ -23,7 +25,7 @@ export class Plain {
      * @returns {EasyCipherText}
      */
     add(cipherText: string, plainText: Int32Array | Float64Array): EasyCipherText {
-        return this.module.rust_add_plain(cipherText, plainText);
+        return this.module!.rust_add_plain(cipherText, plainText);
     }
 
     /**
@@ -34,7 +36,7 @@ export class Plain {
      */
 
     sub(cipherText: string, plainText: Int32Array | Float64Array): EasyCipherText {
-        return this.module.rust_sub_plain(cipherText, plainText);
+        return this.module!.rust_sub_plain(cipherText, plainText);
     }
 
     /**
@@ -45,20 +47,20 @@ export class Plain {
      */
 
     multiply(cipherText: string, plainText: Int32Array | Float64Array): EasyCipherText {
-        return this.module.rust_multiply_plain(cipherText, plainText);
+        return this.module!.rust_multiply_plain(cipherText, plainText);
     }
 
     /**
      * Method that deallocates the wasm module reference
      */
-    delete() {
+    delete(): void {
         this.module = null;
     }
 }
 export class Cipher {
-    private module: any;
+    private module: SealBindings;
 
-    constructor(module: any) {
+    constructor(module: SealBindings) {
         this.module = module;
     }
     /**
@@ -69,7 +71,7 @@ export class Cipher {
      */
 
     add(cipherText1: string, cipherText2: string): EasyCipherText {
-        return this.module.rust_add_ciphers(cipherText1, cipherText2);
+        return this.module!.rust_add_ciphers(cipherText1, cipherText2);
     }
 
     /**
@@ -80,7 +82,7 @@ export class Cipher {
      */
 
     sub(cipherText1: string, cipherText2: string): EasyCipherText {
-        return this.module.rust_sub_ciphers(cipherText1, cipherText2);
+        return this.module!.rust_sub_ciphers(cipherText1, cipherText2);
     }
 
     /**
@@ -91,7 +93,7 @@ export class Cipher {
      */
 
     multiply(cipherText1: string, cipherText2: string): EasyCipherText {
-        return this.module.rust_multiply_ciphers(cipherText1, cipherText2);
+        return this.module!.rust_multiply_ciphers(cipherText1, cipherText2);
     }
 
     /**
@@ -101,7 +103,7 @@ export class Cipher {
      */
 
     square(cipherText: string): EasyCipherText {
-        return this.module.rust_square_cipher(cipherText);
+        return this.module!.rust_square_cipher(cipherText);
     }
 
     /**
@@ -112,7 +114,7 @@ export class Cipher {
      */
 
     exponentiate(cipherText: string, power: number): EasyCipherText {
-        return this.module.rust_exponentiate_cipher(cipherText, power);
+        return this.module!.rust_exponentiate_cipher(cipherText, power);
     }
 
     /**
@@ -122,7 +124,7 @@ export class Cipher {
      */
 
     negate(cipherText: string): EasyCipherText {
-        return this.module.rust_negate_cipher(cipherText);
+        return this.module!.rust_negate_cipher(cipherText);
     }
 
     // sumElements(cipherText: string, scheme: EasyScheme): EasyCipherText {
@@ -131,29 +133,29 @@ export class Cipher {
     /**
      * Method that deallocates the wasm module reference
      */
-    delete() {
+    delete(): void {
         this.module = null;
     }
 }
 
 export class Setup {
-    private module: any;
-    constructor(module: any) {
+    private module: SealBindings;
+    constructor(module: SealBindings) {
         this.module = module;
     }
     /**
      * Method that will initialize the bindings between EasyFHE, SEAL and node-seal
      * @returns
      */
-    initialize(): Promise<FHEModule> {
-        return this.module.rust_initialize();
+    initialize(): Promise<SealBindings> {
+        return this.module!.rust_initialize();
     }
     /**
      * Method that sets the homomorphic encryption scheme
      * @param {EasyScheme} scheme
      */
     setScheme(scheme: EasyScheme): void {
-        this.module.rust_set_scheme(scheme);
+        this.module!.rust_set_scheme(scheme);
     }
     /**
      * Method that sets the  security Context of the module
@@ -168,9 +170,9 @@ export class Setup {
         bitSizes: Int32Array,
         bitSize: number,
         security: EasySecurity,
-        precision = EasyPrecision.NORMAL
+        precision: EasyPrecision = EasyPrecision.NORMAL
     ): void {
-        this.module.rust_setup_context(polyModulusDegree, bitSizes, bitSize, security, precision);
+        this.module!.rust_setup_context(polyModulusDegree, bitSizes, bitSize, security, precision);
     }
 
     /**
@@ -186,19 +188,19 @@ export class Setup {
         processingSpeed: EasySpeed,
         precision = EasyPrecision.NORMAL
     ): void {
-        this.module.rust_fast_setup(scheme, security, processingSpeed, precision);
+        this.module!.rust_fast_setup(scheme, security, processingSpeed, precision);
     }
 
     /**
      * Method that deallocates the wasm module reference
      */
-    delete() {
+    delete(): void {
         this.module = null;
     }
 }
-export class FHEModule {
-    private static instance: FHEModule;
-    private module: any;
+export class EasyFHE {
+    private static instance: EasyFHE;
+    private module: SealBindings;
     public Plain: Plain;
     public Cipher: Cipher;
     public Setup: Setup;
@@ -208,10 +210,10 @@ export class FHEModule {
      * In order to leverage on V8 optimization all class attributes will be initialized in the constructors;
      */
 
-    constructor(module: any) {
+    constructor(module: SealBindings) {
         this.module = module;
-        if (!FHEModule.instance) {
-            FHEModule.instance = this;
+        if (!EasyFHE.instance) {
+            EasyFHE.instance = this;
         }
         this.Plain = new Plain(this.module);
         this.Cipher = new Cipher(this.module);
@@ -224,7 +226,7 @@ export class FHEModule {
      * @returns {[EasyPublicKey, EasySecretKey]}
      */
     generateKeys(): [EasyPublicKey, EasySecretKey] {
-        return this.module.rust_generate_keys();
+        return this.module!.rust_generate_keys();
     }
     /**
      * @param {Int32Array | Float64Array} array
@@ -233,7 +235,7 @@ export class FHEModule {
      */
 
     encrypt(array: Int32Array | Float64Array | Uint32Array, publicKey: EasyPublicKey): EasyCipherText {
-        return this.module.rust_encrypt(array, publicKey);
+        return this.module!.rust_encrypt(array, publicKey);
     }
 
     /**
@@ -243,52 +245,52 @@ export class FHEModule {
      */
 
     decrypt(array: string, secretKey: EasySecretKey): Uint8Array {
-        return this.module.rust_decrypt(array, secretKey);
+        return this.module!.rust_decrypt(array, secretKey);
     }
 
     /**
      * Deallocates the context
      */
     deallocateContext(): void {
-        this.module.rust_deallocate_context();
+        this.module!.rust_deallocate_context();
     }
 
     /**
      * Deallocates the parameters
      */
     deallocateParameters(): void {
-        this.module.rust_deallocate_parameters();
+        this.module!.rust_deallocate_parameters();
     }
     /**
      * Deallocates the SEAL library
      */
     deallocateSEAL(): void {
-        this.module.rust_deallocate_seal();
+        this.module!.rust_deallocate_seal();
     }
     /**
-     * Deallocates the FHE module
+     * Deallocates the easyFHE module
      */
     deallocateLibrary(): void {
         this.Cipher.delete();
         this.Plain.delete();
         this.Setup.delete();
-        this.module.rust_deallocate_library();
+        this.module!.rust_deallocate_library();
     }
 }
 
 /**
  * Method that will fetch a singleton instance of the WebAssembly module
  *
- * @returns Promise<FHEModule>
+ * @returns Promise<EasyFHE>
  */
-const getFheModule = function (): Promise<FHEModule> {
+const getEasyFHE = function (): Promise<EasyFHE> {
     return new Promise((resolve, reject) => {
         (async () => {
-            const module = await import("./wasm/pkg/index.js");
-            const FheModule = new FHEModule(module);
-            resolve(FheModule);
+            const module = (await import("./wasm/pkg/index.js")) as SealBindings;
+            const easyFHE = new EasyFHE(module);
+            resolve(easyFHE);
         })();
     });
 };
 
-export default getFheModule;
+export default getEasyFHE;

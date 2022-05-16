@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FHEModule = exports.Setup = exports.Cipher = exports.Plain = exports.EasyPrecision = exports.EasySpeed = exports.EasySecurity = exports.EasyScheme = void 0;
+exports.EasyFHE = exports.Setup = exports.Cipher = exports.Plain = exports.EasyPrecision = exports.EasySpeed = exports.EasySecurity = exports.EasyScheme = void 0;
 const types_1 = require("./types");
 var types_2 = require("./types");
 Object.defineProperty(exports, "EasyScheme", { enumerable: true, get: function () { return types_2.EasyScheme; } });
@@ -163,7 +163,7 @@ class Setup {
     }
 }
 exports.Setup = Setup;
-class FHEModule {
+class EasyFHE {
     static instance;
     module;
     Plain;
@@ -176,8 +176,8 @@ class FHEModule {
      */
     constructor(module) {
         this.module = module;
-        if (!FHEModule.instance) {
-            FHEModule.instance = this;
+        if (!EasyFHE.instance) {
+            EasyFHE.instance = this;
         }
         this.Plain = new Plain(this.module);
         this.Cipher = new Cipher(this.module);
@@ -235,19 +235,19 @@ class FHEModule {
         this.module.rust_deallocate_library();
     }
 }
-exports.FHEModule = FHEModule;
+exports.EasyFHE = EasyFHE;
 /**
  * Method that will fetch a singleton instance of the WebAssembly module
  *
- * @returns Promise<FHEModule>
+ * @returns Promise<EasyFHE>
  */
-const getFheModule = function () {
+const getEasyFHE = function () {
     return new Promise((resolve, reject) => {
         (async () => {
-            const module = await Promise.resolve().then(() => require("./wasm/pkg/index.js"));
-            const FheModule = new FHEModule(module);
-            resolve(FheModule);
+            const module = (await Promise.resolve().then(() => require("./wasm/pkg/index.js")));
+            const easyFHE = new EasyFHE(module);
+            resolve(easyFHE);
         })();
     });
 };
-exports.default = getFheModule;
+exports.default = getEasyFHE;

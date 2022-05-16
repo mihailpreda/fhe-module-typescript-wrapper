@@ -10,9 +10,11 @@ export declare type EasyPublicKey = PublicKey.PublicKey;
 export declare type EasySecretKey = SecretKey.SecretKey;
 export declare type EasyContext = Context;
 export declare type EasyEncryptionParameters = EncryptionParameters;
+export declare type Nullable<T> = T | null;
+declare type SealBindings = any;
 export declare class Plain {
     private module;
-    constructor(module: any);
+    constructor(module: SealBindings);
     /**
      * Method that adds plain data to encrypted data
      * @param {EasyCipherText} cipherText
@@ -41,7 +43,7 @@ export declare class Plain {
 }
 export declare class Cipher {
     private module;
-    constructor(module: any);
+    constructor(module: SealBindings);
     /**
      * Method that adds two ciphertexts
      * @param {EasyCipherText} cipherText1
@@ -89,12 +91,12 @@ export declare class Cipher {
 }
 export declare class Setup {
     private module;
-    constructor(module: any);
+    constructor(module: SealBindings);
     /**
      * Method that will initialize the bindings between EasyFHE, SEAL and node-seal
      * @returns
      */
-    initialize(): Promise<FHEModule>;
+    initialize(): Promise<SealBindings>;
     /**
      * Method that sets the homomorphic encryption scheme
      * @param {EasyScheme} scheme
@@ -122,7 +124,7 @@ export declare class Setup {
      */
     delete(): void;
 }
-export declare class FHEModule {
+export declare class EasyFHE {
     private static instance;
     private module;
     Plain: Plain;
@@ -133,7 +135,7 @@ export declare class FHEModule {
      * Constructor will be without any parameters because we want to initialize properties of the class in different phases of the application.
      * In order to leverage on V8 optimization all class attributes will be initialized in the constructors;
      */
-    constructor(module: any);
+    constructor(module: SealBindings);
     /**
      * Method that generates a pair of (publicKey, secretKey) encryption keys
      *
@@ -172,7 +174,7 @@ export declare class FHEModule {
 /**
  * Method that will fetch a singleton instance of the WebAssembly module
  *
- * @returns Promise<FHEModule>
+ * @returns Promise<EasyFHE>
  */
-declare const getFheModule: () => Promise<FHEModule>;
-export default getFheModule;
+declare const getEasyFHE: () => Promise<EasyFHE>;
+export default getEasyFHE;
