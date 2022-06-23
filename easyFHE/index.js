@@ -226,7 +226,7 @@ class EasyFHE {
         this.module.rust_deallocate_seal();
     }
     /**
-     * Deallocates the FHE module
+     * Deallocates the easyFHE module
      */
     deallocateLibrary() {
         this.Cipher.delete();

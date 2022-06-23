@@ -13,13 +13,9 @@
   "files": [
     "index_bg.wasm",
     "index.js",
-    "index_bg.js",
     "index.d.ts"
   ],
   "module": "index.js",
   "types": "index.d.ts",
-  "sideEffects": false,
-  "dependencies": {
-    "node-seal": "^5.0.0"
-  }
+  "sideEffects": false
 }

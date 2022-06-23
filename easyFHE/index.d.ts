@@ -167,7 +167,7 @@ export declare class EasyFHE {
      */
     deallocateSEAL(): void;
     /**
-     * Deallocates the FHE module
+     * Deallocates the easyFHE module
      */
     deallocateLibrary(): void;
 }
