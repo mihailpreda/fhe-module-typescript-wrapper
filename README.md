@@ -27,13 +27,13 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="media/logos/wasmfhe/logo_wasm_fhe.png" alt="Logo" width="auto" height="400">
+    <img src="media/logos/logo_easyFHE.png" alt="Logo" width="auto" height="400">
   </a>
 
-  <h3 align="center">FHE WASM</h3>
+  <h3 align="center">EasyFHE Typescript</h3>
 
   <p align="center">
-    A Fully Homomorphic Encryption WebAssembly module written in Rust based on a Rust library for lattice-based additive homomorphic encryption with Typescript bindings
+    A Fully Homomorphic Encryption WebAssembly module written in Rust based on Microsoft SEAL and node-SEAL homomorphic encryption libraries  with Typescript bindings
     <br />
     <a href="https://github.com/mihailpreda/fhe-wasm-module"><strong>Explore the docs »</strong></a>
     <br />
@@ -85,11 +85,12 @@ The goal is to replace the current economic model of websites' monetization. Rat
 
 This implementation was possible with the help of certain languages, frameworks and libraries. The main used technologies are :
 
-- [Vue.js](https://vuejs.org/)
-- [Rust](https://www.rust-lang.org/)
-- [WebAssembly](https://webassembly.org/)
-- [wasm-pack](https://rustwasm.github.io/wasm-pack/)
-- [Cupcake](https://github.com/facebookresearch/Cupcake)
+-   [Vue.js](https://vuejs.org/)
+-   [Rust](https://www.rust-lang.org/)
+-   [WebAssembly](https://webassembly.org/)
+-   [wasm-pack](https://rustwasm.github.io/wasm-pack/)
+-   [node-SEAL](https://github.com/morfix-io/node-seal)
+-   [Microsoft SEAL](https://github.com/microsoft/SEAL)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
@@ -104,86 +105,42 @@ In order for the library to work you need the following:
 
 _The library is tested on a Vue.js webapp which uses as framework quasar_
 
-- npm
-  ```sh
-  npm install npm@latest -g
-  ```
-- quasar
-  ```sh
-  npm install -g @quasar/cli
-  ```
+-   npm
+    ```sh
+    npm install npm@latest -g
+    ```
+-   quasar
+    ```sh
+    npm install -g @quasar/cli
+    ```
 
 ### Installation
 
 _This is a example of installation on a quasar project_
 
 1. Create a quasar project
-   ```sh
-   quasar create <project_name>
-   ```
+    ```sh
+    quasar create <project_name>
+    ```
 2. Clone the repo
-   ```sh
-   git clone https://github.com/mihailpreda/fhe-wasm-module.git
-   ```
-3. Put into the project `src` folder , the `fhe` folder from repo.
-   The project structure of a quasar projects after you insert the `fhe` is as follows:
+    ```sh
+    git clone https://github.com/mihailpreda/fhe-wasm-module.git easyFHE
+    ```
+3. Put into the project `package.json` dependecy property the following:
 
-   ```
-   .
-   ├── public/                  # pure static assets (directly copied)
-   ├── src/
-   │   ├── assets/              # dynamic assets (processed by webpack)
-   │   ├── components/          # .vue components used in pages & layouts
-   │   ├── css/                 # CSS/Sass/... files for your app
-   |   |   ├── app.sass
-   |   │   └── quasar.variables.sass # Quasar Sass variables for you to tweak
-   │(+)├── fhe/                 # <<<<<<<<<<<<<<<<<<<<<<<<< fhe module files >>>>>>>>>>>>>>>>>>>>>>>>>
-   │   ├── layouts/             # layout .vue files
-   │   ├── pages/               # page .vue files
-   │   ├── boot/                # boot files (app initialization code)
-   │   ├── router/              # Vue Router
-   |   |   ├── index.js         # Vue Router definition
-   |   │   └── routes.js        # App Routes definitions
-   │   ├── stores/              # Pinia Stores (if not using Vuex)
-   |   |   ├── index.js         # Pinia initialization
-   |   │   ├── <store>          # Pinia stores...
-   |   │   └── <store>...
-   │   ├── store/               # Vuex Store (if not using Pinia)
-   |   |   ├── index.js         # Vuex Store definition
-   |   │   ├── <folder>         # Vuex Store Module...
-   |   │   └── <folder>         # Vuex Store Module...
-   │   ├── App.vue              # root Vue component of your App
-   │   └── index.template.html  # Template for index.html
-   ├── src-ssr/                 # SSR specific code (like production Node webserver)
-   ├── src-pwa/                 # PWA specific code (like Service Worker)
-   ├── src-cordova/             # Cordova generated folder used to create Mobile Apps
-   ├── src-electron/            # Electron specific code (like "main" thread)
-   ├── src-bex/                 # BEX (browser extension) specific code (like "main" thread)
-   ├── dist/                    # where production builds go
-   │   ├── spa/                 # example when building SPA
-   │   ├── ssr/                 # example when building SSR
-   │   ├── electron/            # example when building Electron
-   │   └── ....
-   ├── quasar.config.js           # Quasar App Config file
-   ├── babel.config.js          # Babeljs config
-   ├── .editorconfig            # editor config
-   ├── .eslintignore            # ESlint ignore paths
-   ├── .eslintrc.js             # ESlint config
-   ├── .postcssrc.js            # PostCSS config
-   ├── .gitignore               # GIT ignore paths
-   ├── package.json             # npm scripts and dependencies
-   └── README.md                # readme for your website/App
-   ```
+    ```
+    easyFHE : file:../easyFHE
+    ```
 
 4. Add into `quasar.conf.js` in webpack configuration into the `build` property, the following: (immediate after _`chainWebpack(chain){...}`_ )
-   ```js
-      extendWebpack(cfg) {
-        cfg.experiments = {
-          asyncWebAssembly: true
-        }
-      },
-   ```
-   For better understanding, check this [quasar.conf.js sample](./media/code/quasar.conf.js)
+    ```js
+       extendWebpack(cfg) {
+         cfg.experiments = {
+           asyncWebAssembly: true
+         }
+       },
+    ```
+    For better understanding, check this [quasar.conf.js sample](./media/code/quasar.conf.js)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -200,7 +157,7 @@ _Example.vue_
 
 <script>
 import { defineComponent } from "vue";
-import getFheModule from "./../fhe/index";
+import getFheModule from "easyFHE";
 
 export default defineComponent({
   name: "Example",
@@ -272,13 +229,12 @@ For better understanding, check this [Example.vue sample](./media/code/Example.v
 
 ## Roadmap
 
-- [x] Generate keypair
-- [x] Serialization of public key and secret key
-- [x] Basic arithmetic operations in range of `u8` (0 - 255) (Add / subtract / multiply / divide by a constant)
-- [x] Addition of two different ciphertexts in range of `u8` (0 - 255)
-- [x] Re-randomization of a ciphertext
-- [ ] Implement basic arithmetic operations for `u16` / `u32` range
-- [ ] Implement addition of two different ciphertexts for `u16` / `u32` range
+-   [x] Generate keypair
+-   [x] Serialization of public key and secret key
+-   [x] Basic arithmetic operations between plaintexts and ciphertexts (Add / subtract / multiply / divide by a constant)
+-   [x] Exponentiation of a ciphertext
+-   [ ] Improve processing speed
+-   [ ] Improve memory usage
 
 See the [open issues](https://github.com/mihailpreda/fhe-wasm-module/issues) for a full list of proposed features (and known issues).
 
@@ -298,7 +254,7 @@ Distributed under the MIT License. See [LICENSE.txt](./LICENSE.txt) for more inf
 
 Preda Mihail Irinel - mihaipreda1997@gmail.com
 
-Project Link: [https://github.com/mihailpreda/fhe-wasm-module](https://github.com/mihailpreda/fhe-wasm-module)
+Project Link: [https://github.com/mihailpreda/fhe-module-wasm](https://github.com/mihailpreda/fhe-module-wasm)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
